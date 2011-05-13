@@ -3,15 +3,28 @@
 from django.db import models
 
 #Haitham:   (how models works? will the following model be defined in 1 database?)
+#daonb: all models are deifned in one database - as define in the project's settings.py
 #Haitham:   (what does foreign key means?)
+#daonb: a one-to-many relationship, helping you connect two models using a 
+#       direct, non-exclusive link from one models to another. 
+#       please use the related_name of attributed of ForeignKey field to 
+#       better name the reverse relationship.
 #Haitham:   how the different model interact?
+#daonb: using ForeignKeys and ManyToMany relatinshps for start
 #Haitham:   can we change the models (add/remove fields) in the future?
+#daonb: it's tricky, but the south app helps
 #Haitham:   how to store user comments EFFICIENTLY? do we have to deal with it now?
+#daonb: no. "We should forget about small efficiencies, say about 97% of the time: 
+#       premature optimization is the root of all evil" Donald Knuth
 #Haitham:   how the data is stored? by a stand alone data base for each layer (can layer be added dynamically by admins)?
 #           or by a generic field in the data database (can we define a generic field)?
 #           i guess that a stand alone data base for each layer is better
+#daonb: not necessarly. we should keep the number of the 'moving parts' to a minimum and
+#       sql databases are fully capble of handling all our layers in one database
 #   where the physical data base will be created?
+#   daonb: in the database defined in the project's settings.py
 #   what is the optimal char fields length
+#   daonb: use TextField and don't worry about running out of chars
 
 class UserBasic(models.Model):
     'common fields for all users'
