@@ -1,4 +1,5 @@
 #encoding: utf-8
+from datetime import datetime
 
 from django.db import models
 
@@ -26,6 +27,10 @@ from django.db import models
 #   what is the optimal char fields length
 #   daonb: use TextField and don't worry about running out of chars
 
+
+
+#---> daonb: this part is not needed. please check out django.contrib.auth for all the exisiting classes
+#            and use them
 class UserBasic(models.Model):
     'common fields for all users'
     user_name = models.CharField("user name",max_length=64, primary_key = True)
@@ -57,26 +62,28 @@ class Moderators(UserBasic):
 class Admins(UserBasic):
     'can add superusers and moderators'
 
+#---< daonb: end of code that exists in abetter form in django.contrib.admin.models
 #---------------------=====================---------------------
 
 class DataLayer(models.Model):
 # each layer is a table inside the database the data are defined for each Layer alone
     'environmental data'
-    layer_name =  models.CharField(max_length=64)
-    position = None #poisiton as defined in the GIS
-    date = models.DateField
-    data1 = None
-    data2 = None
-    #data3 ......
+    layer_name =  models.TextField()
+    center = None #TODO: position field based on django.contrib.gis
+    area = None #TODO: area field based on django.contrib.gis
+    creation_date = models.DateTimeField(default=datetime.now());
+    admin = models.ForeignKey(User, related_name='manging_layers')
 
 #---------------------=====================---------------------
-
+#<-- daonb: please take a look at django.contrib.comments for better code
 class Comments(models.Model):
     user = models.ForeignKey(BasicUser)
     comment =  models.CharField(max_length = 400)
 
+#--->
 #---------------------=====================---------------------
 
+#TODO: do we really need this or can we use django.contrib.gis
 class Regions(models.Model):
     area = None # use polygon/multipolygon from GIS
 
