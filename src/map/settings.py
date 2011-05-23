@@ -10,14 +10,15 @@ ADMINS = (
 MANAGERS = ADMINS
 
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'todo.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '5433',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE' : 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'geodatabase',
+        'USER': '',
+        'PASSWORD': '',
+        'PORT': '5433'
     }
 }
 
@@ -131,7 +132,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'accounts'
+    'accounts',
+    'map_data',
+    'django.contrib.gis'
 )
 
 # A sample logging configuration. The only tangible logging
