@@ -8,7 +8,7 @@ class BaseLayer(models.Model):
 class DataLayer(models.Model):
 # each layer is a table inside the database the data are defined for each Layer alone
     'environmental data'
-    layer_name =  models.CharField(max_length=64)
+    layer_name =  models.TextField(max_length=64)
 
     date = models.DateField
     data1 = None
