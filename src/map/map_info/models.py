@@ -1,29 +1,37 @@
-from django.db import models
-from map.users.models import User
+"""
+Models and Manager for map information
+======================================
 
+>>> miki= User.objects.create_user('miki', 'miki', 'miki')
+>>> layer=Layer.objects.create(name='first layer', description='This is the first layer',owner=miki)
+>>> point=SimplePoint.objects.create(name='a point', description='This is the first point', layer=layer,
+>>>                                  owner=miki, point=...)
+>>> points=layer.points.all()
+>>> points.count()
+1
+>>> points[0].name
+a point
+>>> areas=layer.areas.all()
+>>> areas.count()
+0
+>>> area=SimpleArea.objects.create(name='an area', description='This is the first area', layer=layer, 
+                                   polygon=....)
+>>> areas.count()
+1
+"""
 
-class BaseLayer(models.Model):
-    location = None #poisiton as defined in the GIS
+from django.contrib.gis.db import models
+from django.contrib.auth.models import User
 
-class DataLayer(models.Model):
-# each layer is a table inside the database the data are defined for each Layer alone
-    'environmental data'
-    layer_name =  models.TextField(max_length=64)
+class Layer(models.Model):
+    owner = models.ForeignKey(User, related_name='points')
+    pass
 
-    date = models.DateField
-    data1 = None
-    data2 = None
-    #data3 ......
+class BasePoint(models.Model):0
+    layer = models.ForeignKey(Layer, related_name='points')
+    owner = models.ForeignKey(User, related_name='points')
+    point = models.PointField()
+    #TODO  add more fields and base methods
 
-#---------------------=====================---------------------
-
-class Comment(models.Model):
-    user = models.ForeignKey(BasicUser)
-    comment =  models.CharField(max_length = 400)
-
-#---------------------=====================---------------------
-
-class Region(models.Model):
-    area = None # use polygon/multipolygon from GIS
-
-#---------------------=====================---------------------
+class SimplePoint(BasePoint):
+    pass

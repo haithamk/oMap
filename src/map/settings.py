@@ -128,12 +128,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-#    'map_info',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'accounts'
+    'accounts',
+    'map_info',     # in python we always have a comma at the end of the list 
 )
 
 # A sample logging configuration. The only tangible logging
