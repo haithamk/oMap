@@ -1,3 +1,4 @@
+import os
 # Django settings for map project.
 
 DEBUG = True
@@ -8,17 +9,27 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 
 DATABASES = {
     'default': {
+<<<<<<< HEAD
         'ENGINE' : 'django.contrib.gis.db.backends.postgis',
         'NAME': 'geodatabase',
         'USER': '',
         'PASSWORD': '',
         'PORT': '5433'
+=======
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'todo.db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '5433',                      # Set to empty string for default. Not used with sqlite3.
+>>>>>>> hasdna/master
     }
 }
 
@@ -114,7 +125,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'map.urls'
 
 TEMPLATE_DIRS = (
-     "/home/haitham/Django/oMap/src/map/templates", #TODO haitham: change absolute path
+    os.path.join(PROJECT_ROOT, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -127,15 +138,16 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-#    'map_info',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'accounts',
+<<<<<<< HEAD
     'map_data',
     'django.contrib.gis',
     'piston'
+=======
+    'map_info',     # in python we always have a comma at the end of the list 
+>>>>>>> hasdna/master
 )
 
 # A sample logging configuration. The only tangible logging
