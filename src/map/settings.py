@@ -134,7 +134,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'accounts',
     'map_data',
-    'django.contrib.gis'
+    'django.contrib.gis',
+    'piston'
 )
 
 # A sample logging configuration. The only tangible logging

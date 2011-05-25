@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     (r'^accounts/', include('accounts.urls')),
+    (r'^api/', include('api.urls'), { 'emitter_format': 'json' })
 
     # Examples:
     # url(r'^$', 'map.views.home', name='home'),
