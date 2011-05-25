@@ -7,11 +7,6 @@ class AnonymousDataHandler(AnonymousBaseHandler):
    fields = ('data_type')
 
 
-class UserHandler(BaseHandler):
-    model = User
-    fields = ('username')
-
-
 class DataHandler(BaseHandler):
     allowed_methods = ('GET',)
     model = Data1
