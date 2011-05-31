@@ -1,9 +1,113 @@
-{% extends "accounts/base.html" %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Markers Layer Example</title>
+    <link rel="stylesheet" href="../theme/default/style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+        var map, layer;
 
-{% block content %}
+        function init(){
+            OpenLayers.ProxyHost="/proxy/?url=";
+            map = new OpenLayers.Map('map');
+            layer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+                "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'} );
 
-<p>
- Logged in sucessfully. Welcome {{ user.username }}
-</p>
+            map.addLayer(layer);
+            map.setCenter(new OpenLayers.LonLat(0, 0), 0);
 
-{% endblock %}
+            var markers = new OpenLayers.Layer.Markers( "Markers" );
+            map.addLayer(markers);
+
+            var size = new OpenLayers.Size(21,25);
+            var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+          //  var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+          //  markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(0,0),icon));
+
+          //  var halfIcon = icon.clone();
+         //   markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(0,45),halfIcon));
+
+
+            var x1 = "{{points.0.point.x}}";
+            var y1 = "{{points.0.point.y}}";
+            var sub1 = "{{points.0.subject}}";
+
+       //    markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(x1, y1)));
+     //      markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(11.6894531229, 2.46018118058)));
+       //    markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(34, 32)));
+
+
+            marker = new OpenLayers.Marker(new OpenLayers.LonLat(x1,y1));
+            marker.setOpacity(0.2);
+            marker.events.register('mousedown', marker, function(evt) { alert(sub1); OpenLayers.Event.stop(evt); });
+            markers.addMarker(marker);
+
+
+            var x = null;
+            var y = null;
+            var msg = null;
+
+       
+            {% for p in points %}
+                x = "{{p.point.x}}";
+                y = "{{p.point.y}}";
+                msg = "{{p.subject}}";
+
+                marker = new OpenLayers.Marker(new OpenLayers.LonLat(x,y));
+                marker.setOpacity(0.2);
+                marker.events.register('mousedown', marker, function(evt) { alert(msg); OpenLayers.Event.stop(evt); });
+                markers.addMarker(marker);
+
+            {% endfor %}
+
+
+
+/*
+             {% for p in points %}
+                x = "{{p.point.x}}";
+                y = "{{p.point.y}}";
+                msg = "{{p.subject}}";
+
+                var markerFeature = new OpenLayers.Feature(markers, new OpenLayers.LonLat(x,y), msg);
+                var marker = markerFeature.createMarker();
+                //marker.events.register('click', markerFeature, markerClick);
+                markers.addMarker(marker);
+
+            {% endfor %}
+/*
+
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+            map.zoomToMaxExtent();
+
+            halfIcon.setOpacity(0.5);
+        }
+
+
+
+
+/*
+        markerClick: function(evt) {
+        var sameMarkerClicked = (this == this.layer.selectedFeature);
+        this.layer.selectedFeature = (!sameMarkerClicked) ? this : null;
+        for(var i=0, len=this.layer.map.popups.length; i<len; i++) {
+            this.layer.map.removePopup(this.layer.map.popups[i]);
+        }
+        if (!sameMarkerClicked) {
+            this.layer.map.addPopup(this.createPopup());
+        }
+        OpenLayers.Event.stop(evt);
+        }
+
+  */
+    </script>
+  </head>
+  <body onload="init()">
+    <h1 id="title">Markers Layer Example {{points|length}}</h1>
+    <div id="tags"></div>
+    <div id="shortdesc">Show markers layer with different markers</div>
+    <div id="map" class="smallmap"></div>
+    <div id="docs">
+        This is an example of an OpenLayers.Layers.Markers layer that shows some examples of adding markers.  Also demonstrated is registering a mousedown effect on a marker.
+    </div>
+  </body>
+</html>

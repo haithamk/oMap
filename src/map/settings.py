@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'accounts',
     'django.contrib.gis',
-    'piston'
+    'piston',
     'map_info',     # in python we always have a comma at the end of the list 
 )
 

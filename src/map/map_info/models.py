@@ -24,14 +24,30 @@ from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 
 class Layer(models.Model):
-    owner = models.ForeignKey(User, related_name='points')
+    name = models.TextField(primary_key=True, verbose_name="Layer name:")
+    owner = models.ForeignKey(User, related_name='layers')
+
+    def  __unicode__(self):
+        return self.name
     pass
 
-class BasePoint(models.Model):0
+class BasePoint(models.Model):
     layer = models.ForeignKey(Layer, related_name='points')
-    owner = models.ForeignKey(User, related_name='points')
+    user = models.ForeignKey(User, related_name='points')
     point = models.PointField()
+    date_added = models.DateField()
+    report_date = models.DateField()
+
+    class Meta:
+        abstract = True
+
     #TODO  add more fields and base methods
 
 class SimplePoint(BasePoint):
-    pass
+    subject = models.TextField()
+    description = models.TextField()
+    objects = models.GeoManager()
+
+class Area(models.Model):
+    "used to describe an area of authority"
+    multipolygon = models.MultiPolygonField()

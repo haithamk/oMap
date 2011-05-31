@@ -18,6 +18,8 @@ from django.utils.http import base36_to_int
 
 from django.conf import settings
 
+from map_info.models import SimplePoint
+
 def mylogin(request):
     return views.login(request, 'accounts/login.html', 'accounts/profile')  #,'redirect_field_name': 'accounts/profile'
 
@@ -95,5 +97,6 @@ def signup_complete(request, template_name='registration/signup_complete.html'):
 
 @login_required
 def profile(request):
+    all_points = list(SimplePoint.objects.all())
     # TODO check what is the type of the user and redirect to the suitable home page
-    return render_to_response('accounts/login_success.html', {'user': request.user})
+    return render_to_response('accounts/login_success2.html', {'user': request.user, 'points': all_points})
