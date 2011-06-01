@@ -31,22 +31,25 @@ class Layer(models.Model):
         return self.name
     pass
 
-class BasePoint(models.Model):
+
+
+
+class Point(models.Model):
     layer = models.ForeignKey(Layer, related_name='points')
     user = models.ForeignKey(User, related_name='points')
     point = models.PointField()
     date_added = models.DateField()
     report_date = models.DateField()
-
-    class Meta:
-        abstract = True
-
-    #TODO  add more fields and base methods
-
-class SimplePoint(BasePoint):
     subject = models.TextField()
     description = models.TextField()
+    file = models.TextField()
     objects = models.GeoManager()
+
+     #TODO  add more fields and base methods
+
+
+
+
 
 class Area(models.Model):
     "used to describe an area of authority"

@@ -1,5 +1,5 @@
 from piston.handler import BaseHandler, AnonymousBaseHandler
-from map_info.models import SimplePoint, Layer
+from map_info.models import Point, Layer
 from django.contrib.auth.models import User
 from django.contrib.gis.measure import D  # ``D`` is a shortcut for ``Distance``
 
@@ -16,7 +16,7 @@ class GetLayersNamesHandler(BaseHandler):
 
     allowed_methods = ('GET',)
     model = Layer
-    anonymous = GetDistanceLessAnonymousHandler
+    anonymous = GetLayersNamesAnonymousHandler
     fields = ('name', )
    # fields = (('user',('username')),)
 
@@ -29,7 +29,7 @@ class GetLayersNamesHandler(BaseHandler):
 ####### Get Data Within Handler ###################################################################
 
 class GetWithinAnonymousHandler(AnonymousBaseHandler):
-   model = SimplePoint
+   model = Point
    fields = ('data_type')
 
 
@@ -37,7 +37,7 @@ class GetWithinHandler(BaseHandler):
     'api handler for getdata/<layer_name>/within/<polygon>/'
     
     allowed_methods = ('GET',)
-    model = SimplePoint
+    model = Point
     anonymous = GetWithinAnonymousHandler
     fields = ('subject', 'description', 'point', 'date_added', 'report_date','layer', 'name', 'id', )
    # fields = (('user',('username')),)
@@ -54,7 +54,7 @@ class GetWithinHandler(BaseHandler):
 
 
 class GetDistanceLessAnonymousHandler(AnonymousBaseHandler):
-   model = SimplePoint
+   model = Point
    fields = ('data_type')
 
 
@@ -62,7 +62,7 @@ class GetDistanceLessHandler(BaseHandler):
     'api handler for getdata/<layer_name>/distance-less/<point>/<distance/'
 
     allowed_methods = ('GET',)
-    model = SimplePoint
+    model = Point
     anonymous = GetDistanceLessAnonymousHandler
     fields = ('subject', 'description', 'point', 'date_added', 'report_date','layer', 'name', 'id', )
    # fields = (('user',('username')),)
