@@ -12,7 +12,7 @@ class GetLayersNamesAnonymousHandler(AnonymousBaseHandler):
 
 
 class GetLayersNamesHandler(BaseHandler):
-    'api handler for getdata/layers-names/'
+    'api handler for layer/names/'
 
     allowed_methods = ('GET',)
     model = Layer
@@ -26,19 +26,19 @@ class GetLayersNamesHandler(BaseHandler):
 
 
 
-####### Get Data Within Handler ###################################################################
+####### Search Within Handler #####################################################################
 
-class GetWithinAnonymousHandler(AnonymousBaseHandler):
+class SearchWithinAnonymousHandler(AnonymousBaseHandler):
    model = Point
    fields = ('data_type')
 
 
-class GetWithinHandler(BaseHandler):
-    'api handler for getdata/<layer_name>/within/<polygon>/'
+class SearchWithinHandler(BaseHandler):
+    'api handler for point/search/layer=<layer>&within=<polygon>'
     
     allowed_methods = ('GET',)
     model = Point
-    anonymous = GetWithinAnonymousHandler
+    anonymous = SearchWithinAnonymousHandler
     fields = ('subject', 'description', 'point', 'date_added', 'report_date','layer', 'name', 'id', )
    # fields = (('user',('username')),)
     exclude = ( 'objects')
@@ -50,20 +50,20 @@ class GetWithinHandler(BaseHandler):
         return Layer.objects.get(name = layer_name).points.filter(point__within = poly)
 
 
-####### Get Data By Distance Less Handler #########################################################
+####### Search Around Handler #####################################################################
 
 
-class GetDistanceLessAnonymousHandler(AnonymousBaseHandler):
+class SearchAroundAnonymousHandler(AnonymousBaseHandler):
    model = Point
    fields = ('data_type')
 
 
-class GetDistanceLessHandler(BaseHandler):
-    'api handler for getdata/<layer_name>/distance-less/<point>/<distance/'
+class SearchAroundHandler(BaseHandler):
+    'api handler for point/search/layer=<layer>&around=<point>&r=<distance>'
 
     allowed_methods = ('GET',)
     model = Point
-    anonymous = GetDistanceLessAnonymousHandler
+    anonymous = SearchAroundAnonymousHandler
     fields = ('subject', 'description', 'point', 'date_added', 'report_date','layer', 'name', 'id', )
    # fields = (('user',('username')),)
     exclude = ( 'objects')
