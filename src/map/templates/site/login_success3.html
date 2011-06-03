@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title%}Map{% endblock %}
+{% block javascript %}
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+        var mapa, layer;
+
+        function init(){
+            OpenLayers.ProxyHost="/proxy/?url=";
+            mapa = new OpenLayers.Map('mapa');
+            layer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+                "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'} );
+
+
+            mapa.addLayer(layer);
+            mapa.setCenter(new OpenLayers.LonLat(0, 0), 8);
+            mapa.zoomTo(7);
+
+            var markers = new OpenLayers.Layer.Markers( "Markers" );
+            mapa.addLayer(markers);
+
+            var x = null;
+            var y = null;
+         //   var msg = null;
+
+
+            {% for p in points %}
+            {   x = "{{p.point.x}}";
+                y = "{{p.point.y}}";
+                var msg = "{{p.subject}}";
+                //var msg2 = "{{points.3.subject}}";
+
+                marker = new OpenLayers.Marker(new OpenLayers.LonLat(x,y));
+                marker.setOpacity(0.2);
+                marker.events.register('mousedown', marker, function(evt) { /*alert(msg2); OpenLayers.Event.stop(evt);*/
+
+                    popup = new OpenLayers.Popup("chicken",
+                   new OpenLayers.LonLat(x,y),
+                   new OpenLayers.Size(200,200),
+                   new String("{{p.subject}}"),
+                   true);
+                    mapa.addPopup(popup); });
+                markers.addMarker(marker);
+
+/*
+                popup = new OpenLayers.Popup("chicken",
+                   new OpenLayers.LonLat(x,y),
+                   new OpenLayers.Size(200,200),
+                   "example popup",
+                   true);
+
+                mapa.addPopup(popup);
+
+                */
+            }
+
+            {% endfor %}
+
+
+            mapa.addControl(new OpenLayers.Control.LayerSwitcher());
+           // mapa.zoomToMaxExtent();
+
+            halfIcon.setOpacity(0.5);
+        }
+
+
+         function search(){
+             var point_str = document.getElementById('point').value;
+             var list = point_str.split(",");
+             var x = parseFloat(list[0]);
+             var y = parseFloat(list[1]);
+             mapa.setCenter(new OpenLayers.LonLat(x, y), 10);
+             alert(mapa.getzoom());
+         }
+    </script>
+
+    
+
+{% endblock %}
+
+{% block body %}
+ <body onload="init()">
+    <div class = "Search" align="center">
+        <form action="" onsubmit="search()">   <!--<form method=post action="" onsubmit="search()"-->
+            <input type="text" id ="point" size="40">
+            <input type="Submit" value="Search">
+        </form>
+    </div>
+
+    <div id="mapa" class="smallmap" align="center"></div>
+</body>
+{% endblock %}

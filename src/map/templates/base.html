@@ -1,0 +1,19 @@
+
+<html>
+<head>
+    <title>{% block title%}{% endblock %}</title>
+    {% block javascript %}{% endblock %}
+</head>
+<body>
+    <div id="menu" onload="init()">
+            {% block nav-global %}
+
+                <a href="www.google.com">Admin</a>
+                <a href="wwww.google.com">Add post</a>
+
+            {% endblock %}
+
+    </div>
+</body>
+{% block body%}{% endblock %}
+</html>

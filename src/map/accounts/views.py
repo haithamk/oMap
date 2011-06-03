@@ -99,4 +99,4 @@ def signup_complete(request, template_name='registration/signup_complete.html'):
 def profile(request):
     all_points = list(Point.objects.all())
     # TODO check what is the type of the user and redirect to the suitable home page
-    return render_to_response('accounts/login_success2.html', {'user': request.user, 'points': all_points})
+    return render_to_response('site/login_success3.html', {'user': request.user, 'points': all_points})
