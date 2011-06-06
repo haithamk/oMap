@@ -14,9 +14,8 @@
 
 
             mapa.addLayer(layer);
-            mapa.setCenter(new OpenLayers.LonLat(0, 0), 8);
-            mapa.zoomTo(7);
-
+            mapa.setCenter(new OpenLayers.LonLat(35, 32), 8);
+            
             var markers = new OpenLayers.Layer.Markers( "Markers" );
             mapa.addLayer(markers);
 
@@ -28,31 +27,22 @@
             {% for p in points %}
             {   x = "{{p.point.x}}";
                 y = "{{p.point.y}}";
-                var msg = "{{p.subject}}";
                 //var msg2 = "{{points.3.subject}}";
+
+                var onClick = function(evt){
+                        popup = new OpenLayers.Popup("chicken",
+                          new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}"),
+                          new OpenLayers.Size(200,200),
+                          new String("{{p.subject}}"),
+                        true);
+                        mapa.addPopup(popup);
+               }
 
                 marker = new OpenLayers.Marker(new OpenLayers.LonLat(x,y));
                 marker.setOpacity(0.2);
-                marker.events.register('mousedown', marker, function(evt) { /*alert(msg2); OpenLayers.Event.stop(evt);*/
-
-                    popup = new OpenLayers.Popup("chicken",
-                   new OpenLayers.LonLat(x,y),
-                   new OpenLayers.Size(200,200),
-                   new String("{{p.subject}}"),
-                   true);
-                    mapa.addPopup(popup); });
+                marker.events.register('mousedown', marker, onClick);
                 markers.addMarker(marker);
 
-/*
-                popup = new OpenLayers.Popup("chicken",
-                   new OpenLayers.LonLat(x,y),
-                   new OpenLayers.Size(200,200),
-                   "example popup",
-                   true);
-
-                mapa.addPopup(popup);
-
-                */
             }
 
             {% endfor %}
@@ -71,7 +61,6 @@
              var x = parseFloat(list[0]);
              var y = parseFloat(list[1]);
              mapa.setCenter(new OpenLayers.LonLat(x, y), 10);
-             alert(mapa.getzoom());
          }
     </script>
 
@@ -82,10 +71,14 @@
 {% block body %}
  <body onload="init()">
     <div class = "Search" align="center">
-        <form action="" onsubmit="search()">   <!--<form method=post action="" onsubmit="search()"-->
+        <input type="text" id ="point" size="40">
+        <button type="button" onclick="search()">Search</button>
+
+         <!--<form method=post action="" onsubmit="search()"
             <input type="text" id ="point" size="40">
             <input type="Submit" value="Search">
         </form>
+        -->
     </div>
 
     <div id="mapa" class="smallmap" align="center"></div>

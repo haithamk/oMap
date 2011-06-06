@@ -24,6 +24,10 @@ urlpatterns = patterns('',
                         'accounts.views.signup_complete',
                         {'template_name': 'accounts/signup_complete.html'}),
 
+                       (r'^logout/$',
+                        #'django.contrib.auth.views.login',
+                        "accounts.views.logout"),
+
 
 
 

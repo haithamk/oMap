@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views
@@ -95,8 +95,22 @@ def signup_complete(request, template_name='registration/signup_complete.html'):
                               context_instance=RequestContext(request,
                                                               {'login_url': settings.LOGIN_URL}))
 
-@login_required
+def logout(request):
+    #return views.logout(request)
+    views.logout(request)
+    return redirect('/accounts/profile', request)
+    all_points = list(Point.objects.all())
+    # TODO check what is the type of the user and redirect to the suitable home page
+    dict = {'user': request.user, 'points': all_points}
+    return render_to_response('site/login_success3.html', dict)
+
+#@login_required
 def profile(request):
     all_points = list(Point.objects.all())
     # TODO check what is the type of the user and redirect to the suitable home page
-    return render_to_response('site/login_success3.html', {'user': request.user, 'points': all_points})
+
+    if request.user.is_authenticated():
+        dict = {'user': request.user, 'points': all_points}
+    else:
+        dict = {'user': None, 'points': all_points}
+    return render_to_response('site/login_success3.html', dict)

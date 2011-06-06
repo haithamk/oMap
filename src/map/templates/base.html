@@ -1,15 +1,61 @@
 
 <html>
 <head>
+
+    <!--<link rel="stylesheet" href="style.css" type="text/css"  /> -->
     <title>{% block title%}{% endblock %}</title>
+
     {% block javascript %}{% endblock %}
+
+    <style type="text/css">
+        ul#list-nav {
+        list-style:none;
+        margin:20px;
+        padding:0;
+        width:525px
+        }
+        
+        ul#list-nav li {
+        display:inline
+        }
+
+        ul#list-nav li a {
+        text-decoration:none;
+        padding:5px 0;
+        width:100px;
+        background:#485e49;
+        color:#eee;
+        float:left;
+        text-align:center;
+        border-left:1px solid #fff;
+        }
+
+        ul#list-nav li a:hover {
+        background:#a2b3a1;
+        color:#000
+        }
+    </style>
+
 </head>
 <body>
-    <div id="menu" onload="init()">
+
+     <div id="menu">
             {% block nav-global %}
 
-                <a href="www.google.com">Admin</a>
-                <a href="wwww.google.com">Add post</a>
+                <ul id="list-nav">
+                    {% if user %}
+                        {% if user.is_staff %}
+                            <li><a href="{% url admin:index %}">Admin</a></li>
+                         {% endif %}
+                        <li><a href="#">Home</a></li>
+                        <li><a href="{% url accounts.views.logout %}">Log out</a></li>
+                     {% else %}
+                        <li><a href="{% url accounts.views.mylogin %}">Log in</a></li>
+                    {% endif %}
+
+                 <br>
+                <h1>Wellcome {{user.username}}</h1>
+                </br>
 
             {% endblock %}
 
