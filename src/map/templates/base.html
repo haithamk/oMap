@@ -44,11 +44,21 @@
 
                 <ul id="list-nav">
                     {% if user %}
-                        {% if user.is_staff %}
-                            <li><a href="{% url admin:index %}">Admin</a></li>
-                         {% endif %}
-                        <li><a href="#">Home</a></li>
-                        <li><a href="{% url accounts.views.logout %}">Log out</a></li>
+                        {% if user.is_authenticated %}
+                            {% if user.is_staff %}
+                                <li><a href="{% url admin:index %}">Admin</a></li>
+                            {% endif %}
+                            {% if perms.map_info %}
+                                <li><a href="{% url map_info.views.add_point %}">Points</a></li>
+                            {% endif %}
+                            <li><a href="{% url map_info.views.main %}">Home</a></li>
+                            <li><a href="{% url accounts.views.profile %}">Profile</a></li>
+                            <li><a href="{% url accounts.views.logout %}">Log out</a></li>
+
+                        {% else %}
+                            <li><a href="{% url accounts.views.mylogin %}">Log in</a></li>
+                        {% endif %}
+
                      {% else %}
                         <li><a href="{% url accounts.views.mylogin %}">Log in</a></li>
                     {% endif %}
