@@ -21,25 +21,21 @@
 
             var x = null;
             var y = null;
-         //   var msg = null;
-
 
             {% for p in points %}
             {   x = "{{p.point.x}}";
                 y = "{{p.point.y}}";
-                //var msg2 = "{{points.3.subject}}";
 
                 var onClick = function(evt){
                         popup = new OpenLayers.Popup("chicken",
                           new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}"),
                           new OpenLayers.Size(200,200),
-                          new String("{{p.subject}}"),
+                           new String("<b>{{p.subject}}</b> <p>{{p.description}}</p> <p>Date Added: {{p.date_added}}</p> <p>Added By: {{p.user}}</p> <p> <a href=http://127.0.0.1:8000/accounts/profile/ > more info </a> </p>"),
                         true);
                         mapa.addPopup(popup);
                }
 
                 marker = new OpenLayers.Marker(new OpenLayers.LonLat(x,y));
-                marker.setOpacity(0.2);
                 marker.events.register('mousedown', marker, onClick);
                 markers.addMarker(marker);
 
@@ -47,11 +43,9 @@
 
             {% endfor %}
 
-
             mapa.addControl(new OpenLayers.Control.LayerSwitcher());
            // mapa.zoomToMaxExtent();
 
-            halfIcon.setOpacity(0.5);
         }
 
 
@@ -62,23 +56,20 @@
              var y = parseFloat(list[1]);
              mapa.setCenter(new OpenLayers.LonLat(x, y), 10);
          }
+
+
     </script>
 
-    
-
 {% endblock %}
+
+
+
 
 {% block body %}
  <body onload="init()">
     <div class = "Search" align="center">
         <input type="text" id ="point" size="40">
         <button type="button" onclick="search()">Search</button>
-
-         <!--<form method=post action="" onsubmit="search()"
-            <input type="text" id ="point" size="40">
-            <input type="Submit" value="Search">
-        </form>
-        -->
     </div>
 
     <div id="mapa" class="smallmap" align="center"></div>

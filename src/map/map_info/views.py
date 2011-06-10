@@ -12,11 +12,10 @@ def main(request):
         dict = {'user': request.user, 'points': all_points}
     else:
         dict = {'user': None, 'points': all_points}
-    return render_to_response('site/login_success3.html',  RequestContext(request,dict))
+    return render_to_response('site/index.html',  RequestContext(request,dict))
 
 
 def add_point(request):
-    #TODO check the user permissions
     user = request.user
     if(not request.user.is_authenticated()):
         title = "Error"
@@ -29,7 +28,7 @@ def add_point(request):
     if request.method == 'POST':
         form = AddPointForm(request.POST)
         if(form.is_valid()):
-            #TODO save the new data
+            #TODO save the new data. figure out how to deal with layers and points
             point_ = "POINT (12.0722656215841013 -10.3149192839854464)"
             date_ = form.cleaned_data['report_date']
             layers = Layer.objects.all()
