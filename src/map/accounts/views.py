@@ -20,8 +20,15 @@ from django.conf import settings
 
 from map_info.models import Point
 
+
+
+
 def mylogin(request):
-    return views.login(request, 'accounts/login.html', 'accounts/profile')  #,'redirect_field_name': 'accounts/profile'
+    if request.method=='GET':
+        return views.login(request, 'accounts/login.html', '/map')
+    else:
+        views.login(request)
+    return redirect('/map', request)
 
 def add_user(request):
     user = User.objects.create_user('haitham', 'lennon@thebeatles.com', '12345')
@@ -96,21 +103,10 @@ def signup_complete(request, template_name='registration/signup_complete.html'):
                                                               {'login_url': settings.LOGIN_URL}))
 
 def logout(request):
-    #return views.logout(request)
     views.logout(request)
-    return redirect('/accounts/profile', request)
-    all_points = list(Point.objects.all())
-    # TODO check what is the type of the user and redirect to the suitable home page
-    dict = {'user': request.user, 'points': all_points}
-    return render_to_response('site/login_success3.html', dict)
+    return redirect('/map', request)
 
-#@login_required
+
+@login_required
 def profile(request):
-    all_points = list(Point.objects.all())
-    # TODO check what is the type of the user and redirect to the suitable home page
-
-    if request.user.is_authenticated():
-        dict = {'user': request.user, 'points': all_points}
-    else:
-        dict = {'user': None, 'points': all_points}
-    return render_to_response('site/login_success3.html', dict)
+    return render_to_response('accounts/profile.html')

@@ -33,5 +33,5 @@ urlpatterns = patterns('',
 
 
                         (r'^profile/$',
-                        'accounts.views.profile')
+                        'accounts.views.profile'),
 )
