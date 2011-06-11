@@ -1,4 +1,4 @@
-from map_info.models import Point, Layer
+from map_info.models import Point, Layer, Comment
 from django.contrib.gis import admin
 
 class LayerAdmin(admin.OSMGeoAdmin):
@@ -13,5 +13,9 @@ class PointAdmin(admin.OSMGeoAdmin):
     search_fields = ('user__username',)
     ordering = ['-date_added']
 
+class CommentAdmin(admin.ModelAdmin):
+    display_fields = ["point", "author", "created"]
+
 admin.site.register(Layer, LayerAdmin)
 admin.site.register(Point, PointAdmin)
+admin.site.register(Comment, CommentAdmin)

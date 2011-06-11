@@ -29,7 +29,7 @@
                         popup = new OpenLayers.Popup("chicken",
                           new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}"),
                           new OpenLayers.Size(200,200),
-                           new String("<b>{{p.subject}}</b> <p>{{p.description}}</p> <p>Date Added: {{p.date_added}}</p> <p>Added By: {{p.user}}</p> <p> <a href=\"{% url map_info.views.view_detailed point_id=p.id %}\" > more info </a> </p>"),
+                           new String("<b>{{p.subject}}</b> <p>{{p.description}}</p> <p>Date Added: {{p.date_added}}</p> <p>Added By: {{p.user}}</p> <p> <a href=\"{% url map_info.views.view_detailed p.id %}\" > more info </a> </p>"),
                         true);
                         mapa.addPopup(popup);
                }

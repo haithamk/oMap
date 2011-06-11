@@ -48,7 +48,14 @@ class Point(models.Model):
      #TODO  add more fields and base methods
 
 
+class Comment(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, related_name='comments')
+    body = models.TextField()
+    point = models.ForeignKey(Point, related_name='comments')
 
+    def __unicode__(self):
+        return unicode("%s: %s" % (self.point, self.body[:60]))
 
 
 class Area(models.Model):

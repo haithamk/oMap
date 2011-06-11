@@ -1,8 +1,9 @@
 
-from django.shortcuts import render_to_response, redirect
-from map_info.models import Point, Layer
-from map_info.forms import AddPointForm
+from django.shortcuts import render_to_response, redirect, HttpResponseRedirect
+from map_info.models import Point, Layer, Comment
+from map_info.forms import AddPointForm, CommentForm
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
 
 def main(request):
     all_points = list(Point.objects.all())
@@ -51,5 +52,19 @@ def add_point(request):
 def view_detailed(request, point_id):
     point = Point.objects.get(id = point_id)
     title = point.point
-    dict = {'point': point, 'title': title,}
-    return render_to_response('site/details.html', dict)
+    comments = point.comments.all()
+    dict = {'point': point, 'title': title, 'comments' : comments, 'form' : CommentForm()}
+    return render_to_response('site/details.html',  RequestContext(request,dict))
+
+def add_comment(request, point_id):
+    """Add a new comment."""
+    p = request.POST
+
+    if p.has_key("body") and p["body"]:
+        author_ = request.user
+        body_ =   p["body"]
+        point_ = Point.objects.get(id = point_id)
+        comment = Comment(author = author_, body = body_, point = point_)
+        comment.save()
+
+    return HttpResponseRedirect(reverse("map_info.views.view_detailed", args=[point_id]))

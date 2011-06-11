@@ -1,5 +1,5 @@
 from django import forms
-from map_info.models import Layer
+from map_info.models import Layer, Comment
 
 class AddPointForm(forms.Form):
     layer = forms.ModelChoiceField(Layer.objects.all())
@@ -8,3 +8,8 @@ class AddPointForm(forms.Form):
     description = forms.CharField()
     file = forms.CharField()
     point = forms.CharField()
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ["post", "author"]
