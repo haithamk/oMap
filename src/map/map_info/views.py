@@ -46,3 +46,10 @@ def add_point(request):
         form = AddPointForm()
         return render_to_response('site/add_point.html', RequestContext(request, {'form': form, 'user' : request.user,}))
 
+
+
+def view_detailed(request, point_id):
+    point = Point.objects.get(id = point_id)
+    title = point.point
+    dict = {'point': point, 'title': title,}
+    return render_to_response('site/details.html', dict)
