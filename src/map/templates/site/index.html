@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block title%}Map{% endblock %}
 {% block javascript %}
     <script src="http://openlayers.org/api/OpenLayers.js"></script>
@@ -44,10 +45,19 @@
             {% endfor %}
 
             mapa.addControl(new OpenLayers.Control.LayerSwitcher());
+
+            mapa.events.register('click', mapa, handleMapClick);
            // mapa.zoomToMaxExtent();
 
         }
 
+
+            function handleMapClick(evt)
+    {
+       var lonlat = map.getLonLatFromViewPortPx(evt.xy);
+       // use lonlat
+       alert(lonlat);
+    }
 
          function search(){
              var point_str = document.getElementById('point').value;
@@ -73,5 +83,5 @@
     </div>
 
     <div id="mapa" class="smallmap" align="center"></div>
-</body>
+ </body>
 {% endblock %}

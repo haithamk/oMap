@@ -30,6 +30,7 @@ def add_point(request):
         if(form.is_valid()):
             #TODO save the new data. figure out how to deal with layers and points
             point_ = "POINT (12.0722656215841013 -10.3149192839854464)"
+            point_ = form.cleaned_data['point']
             date_ = form.cleaned_data['report_date']
             layers = Layer.objects.all()
             layer_= layers[0]
