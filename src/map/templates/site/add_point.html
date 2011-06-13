@@ -3,17 +3,6 @@
 {% block title%}Add Point{% endblock %}
 
 
-
-
-{% block style %}
-    .smallmap {
-    width: 512px;
-    height: 256px;
-    border: 1px solid #ccc;
-}
-{% endblock %}
-
-        
 {% block javascript %}
  <script src="http://openlayers.org/api/OpenLayers.js"></script>
  <script type="text/javascript">
@@ -58,9 +47,6 @@
                 toolbar.addControls(panelControls);
                 map.addControl(toolbar);
 
-
-
-
                 map.addLayers([layer, vlayer]);
 
                 map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
@@ -70,18 +56,15 @@
 {% endblock %}
 
 
-{% block body %}
+{% block right %}
     
- <body onload="init()">
-    <form name = "data" action="" method="post">{% csrf_token %}
+   <form name = "data" action="" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Submit" />
 
-  
     </form>
 
    <div id="map" class="smallmap"></div>
- </body>
 
 {% endblock %}
 

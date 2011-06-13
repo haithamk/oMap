@@ -1,4 +1,3 @@
-
 from django.shortcuts import render_to_response, redirect, HttpResponseRedirect
 from map_info.models import Point, Layer, Comment
 from map_info.forms import AddPointForm, CommentForm

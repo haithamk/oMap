@@ -1,77 +1,80 @@
-
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 
-    <!--<link rel="stylesheet" href="style.css" type="text/css"  /> -->
-    <title>{% block title%}{% endblock %}</title>
+    {% block javascript %}
+        <script type="text/javascript">
+            function init(){
+            }
+        </script>
+    {% endblock %}
 
-    {% block javascript %}{% endblock %}
+    {% block style %} {% endblock %}
 
-    <style type="text/css">
-        ul#list-nav {
-        list-style:none;
-        margin:20px;
-        padding:0;
-        width:525px
-        }
-        
-        ul#list-nav li {
-        display:inline
-        }
-
-        ul#list-nav li a {
-        text-decoration:none;
-        padding:5px 0;
-        width:100px;
-        background:#485e49;
-        color:#eee;
-        float:left;
-        text-align:center;
-        border-left:1px solid #fff;
-        }
-
-        ul#list-nav li a:hover {
-        background:#a2b3a1;
-        color:#000
-        }
-        {% block style %}{% endblock %}
-    </style>
-
-
+	<title>{% block title%}oMap{% endblock %}</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/media/style/style.css" type="text/css" media="screen" />
 </head>
-<body>
 
-     <div id="menu">
-            {% block nav-global %}
+<body onload="init()">
+    <div id="page">
 
+        <div id="bg1"><span title="IE6 Bug"></span></div>
+        <div id="bg2">
+            <div id="menu">
+                <div class="clear"></div>
+                <!-- navigation items -->
                 <ul id="list-nav">
                     {% if user %}
                         {% if user.is_authenticated %}
                             {% if user.is_staff %}
-                                <li><a href="{% url admin:index %}">Admin</a></li>
+                                <li><a href="{% url admin:index %}" class="list-nav-link">Admin</a></li>
                             {% endif %}
                             {% if perms.map_info %}
-                                <li><a href="{% url map_info.views.add_point %}">Points</a></li>
+                                <li><a href="{% url map_info.views.add_point %}" class="list-nav-link">Points</a></li>
                             {% endif %}
-                            <li><a href="{% url map_info.views.main %}">Home</a></li>
-                            <li><a href="{% url accounts.views.profile %}">Profile</a></li>
-                            <li><a href="{% url accounts.views.logout %}">Log out</a></li>
+                            <li><a href="{% url map_info.views.main %}" class="list-nav-link" title="Home">Home</a></li>
+                            <li><a href="{% url accounts.views.profile %}" class="list-nav-link">Profile</a></li>
+                            <li><a href="{% url accounts.views.logout %}" class="list-nav-link">Log out ({{user.username}})</a></li>
 
                         {% else %}
-                            <li><a href="{% url accounts.views.mylogin %}">Log in</a></li>
+                            <li><a href="{% url accounts.views.mylogin %}" class="list-nav-link">Log in</a></li>
                         {% endif %}
 
                      {% else %}
-                        <li><a href="{% url accounts.views.mylogin %}">Log in</a></li>
+                        <li><a href="{% url accounts.views.mylogin %}" class="list-nav-link">Log in</a></li>
                     {% endif %}
+                </ul>
+                <div class="clear"></div>
 
-                 <br>
-                <h1>Wellcome {{user.username}}</h1>
-                </br>
 
-            {% endblock %}
+            </div>
 
-    </div>
+            <div id="tools">
+                {% block tools %}
+                {% endblock %}
+            </div>
+
+            <div id="content">
+                <div id="left">
+                    {% block left %}
+                        <h2>Sidebar</h2>
+                        <p class="italic">This bar will display the recent posts in the future</p> {% endblock %}
+                </div>
+
+                <div id="right">
+                    {% block right %}{% endblock %}
+                </div>
+
+                <div class="clear"></div>
+            </div> <!-- content-->
+
+    </div> <!-- pg2-->
+
+        <div id="footer">
+           {% block footer %}Developed by oMap team. Enjoy!{% endblock %}
+        </div> <!-- footer-->
+
+    </div> <!-- page-->
 </body>
-{% block body%}{% endblock %}
+
 </html>
