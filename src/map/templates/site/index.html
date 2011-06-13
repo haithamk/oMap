@@ -7,13 +7,26 @@
 
         function init(){
             OpenLayers.ProxyHost="/proxy/?url=";
-            mapa = new OpenLayers.Map('mapa');
+
+            var options = { controls: [
+                new OpenLayers.Control.Navigation(),
+                new OpenLayers.Control.KeyboardDefaults(),
+                new OpenLayers.Control.PanZoomBar(),
+                new OpenLayers.Control.Scale(),
+                new OpenLayers.Control.Attribution()
+            ]};
+
+            mapa = new OpenLayers.Map('mapa', options);
             layer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
                 "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'} );
 
 
-            mapa.addLayer(layer);
-            mapa.setCenter(new OpenLayers.LonLat(35, 32), 8);
+          /*  mapa.addLayer(layer);*/
+            mapa.addLayer(new OpenLayers.Layer.OSM());
+            mapa.setCenter(new OpenLayers.LonLat(35, 32).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+          ), 8);
 
             var markers = new OpenLayers.Layer.Markers( "Markers" );
             mapa.addLayer(markers);
@@ -26,15 +39,24 @@
                 y = "{{p.point.y}}";
 
                 var onClick = function(evt){
+                    var pnt = (new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}")).transform(
+                          new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                          new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+                          );
                         popup = new OpenLayers.Popup("chicken",
-                          new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}"),
+                          pnt,
                           new OpenLayers.Size(200,200),
                            new String("<b>{{p.subject}}</b> <p>{{p.description}}</p> <p>Date Added: {{p.date_added}}</p> <p>Added By: {{p.user}}</p> <p> <a href=\"{% url map_info.views.view_detailed p.id %}\" > more info </a> </p>"),
                         true);
                         mapa.addPopup(popup);
                }
 
-                marker = new OpenLayers.Marker(new OpenLayers.LonLat(x,y));
+                var pnt = (new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}")).transform(
+                          new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                          new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+                          );
+
+                marker = new OpenLayers.Marker(pnt);
                 marker.events.register('mousedown', marker, onClick);
                 markers.addMarker(marker);
 
@@ -44,6 +66,17 @@
 
             mapa.addControl(new OpenLayers.Control.LayerSwitcher());
 
+       /*
+                Navigate to home!!
+           var panel = new OpenLayers.Control.Panel();
+           panel.addControls([
+                new OpenLayers.Control.Button({
+                    displayClass: "helpButton", trigger: function() {alert('help')}, title: 'Help'
+                })
+           ]);
+            map.addControl(panel);
+
+       */
             mapa.events.register('click', mapa, handleMapClick);
            // mapa.zoomToMaxExtent();
 

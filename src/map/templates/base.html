@@ -17,8 +17,7 @@
 
 <body onload="init()">
     <div id="page">
-
-        <div id="bg1"><span title="IE6 Bug"></span></div>
+         <div id="bg1"></div>
         <div id="bg2">
             <div id="menu">
                 <div class="clear"></div>
@@ -34,7 +33,7 @@
                             {% endif %}
                             <li><a href="{% url map_info.views.main %}" class="list-nav-link" title="Home">Home</a></li>
                             <li><a href="{% url accounts.views.profile %}" class="list-nav-link">Profile</a></li>
-                            <li><a href="{% url accounts.views.logout %}" class="list-nav-link">Log out ({{user.username}})</a></li>
+                            <li><a href="{% url accounts.views.logout %}" class="list-nav-link">Log out</a></li>
 
                         {% else %}
                             <li><a href="{% url accounts.views.mylogin %}" class="list-nav-link">Log in</a></li>
@@ -44,8 +43,13 @@
                         <li><a href="{% url accounts.views.mylogin %}" class="list-nav-link">Log in</a></li>
                     {% endif %}
                 </ul>
-                <div class="clear"></div>
+                {% if user.is_authenticated %}
+                    <div id="username">
+                        Welcome, {{user.username}}
+                    </div>
+                {% endif %}
 
+                 <div class="clear"></div>
 
             </div>
 
