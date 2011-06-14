@@ -25,6 +25,7 @@
                 <div class="clear"></div>
                 <!-- navigation items -->
                 <ul id="list-nav">
+                    <li><a href="{% url map_info.views.main %}" class="list-nav-link" title="Home">Home</a></li>
                     {% if user %}
                         {% if user.is_authenticated %}
                             {% if user.is_staff %}
@@ -33,7 +34,6 @@
                             {% if perms.map_info %}
                                 <li><a href="{% url map_info.views.add_point %}" class="list-nav-link">Points</a></li>
                             {% endif %}
-                            <li><a href="{% url map_info.views.main %}" class="list-nav-link" title="Home">Home</a></li>
                             <li><a href="{% url accounts.views.profile %}" class="list-nav-link">Profile</a></li>
                             <li><a href="{% url accounts.views.logout %}" class="list-nav-link">Log out</a></li>
 

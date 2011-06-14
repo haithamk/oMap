@@ -38,11 +38,12 @@ class Point(models.Model):
     layer = models.ForeignKey(Layer, related_name='points')
     user = models.ForeignKey(User, related_name='points')
     point = models.PointField()
-    date_added = models.DateField()
+    date_added = models.DateField(auto_now_add=True)
     report_date = models.DateField()
     subject = models.TextField()
     description = models.TextField()
-    file = models.TextField()
+    file = models.FilePathField()
+    views_count = models.IntegerField()
     objects = models.GeoManager()
 
      #TODO  add more fields and base methods

@@ -158,4 +158,9 @@ h3 {
         float: left;
     }
 
+   #pdf-viewer{
+	width:900px;
+        height:500px;
+   }
+
 

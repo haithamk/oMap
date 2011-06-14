@@ -58,7 +58,7 @@
 
 {% block right %}
     
-   <form name = "data" action="" method="post">{% csrf_token %}
+   <form name = "data" enctype="multipart/form-data" method="post" action=".">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Submit" />
 

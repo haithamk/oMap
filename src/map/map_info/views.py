@@ -3,6 +3,7 @@ from map_info.models import Point, Layer, Comment
 from map_info.forms import AddPointForm, CommentForm
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 def main(request):
     all_points = list(Point.objects.all())
@@ -26,7 +27,7 @@ def add_point(request):
         msg = "You don't have permissions to access this page"
         return render_to_response('site/msg.html', {'title' : title,'msg': msg, 'user' : request.user,})
     if request.method == 'POST':
-        form = AddPointForm(request.POST)
+        form = AddPointForm(request.POST, request.FILES)
         if(form.is_valid()):
             #TODO save the new data. figure out how to deal with layers and points
             point_ = "POINT (12.0722656215841013 -10.3149192839854464)"
@@ -36,9 +37,12 @@ def add_point(request):
             layer_= layers[0]
             subject_ = form.cleaned_data['subject']
             description_ = form.cleaned_data['description']
-            file_ = form.cleaned_data['file']
-            data = Point(user = request.user, layer = layer_, point = point_, subject = subject_, description= description_, file =file_, date_added = date_, report_date = date_)
+            #file_ = form.cleaned_data['file']
+            file_ = "00"
+            data = Point(user = request.user, layer = layer_, point = point_, subject = subject_, description= description_, file =file_, report_date = date_, views_count = 0)
             data.save()
+            id = data.id
+            handle_uploaded_file(request.FILES['file'], id)
             
             return redirect('/map/', request)
         return render_to_response('site/add_point.html', {'form': form,})
@@ -46,13 +50,21 @@ def add_point(request):
         form = AddPointForm()
         return render_to_response('site/add_point.html', RequestContext(request, {'form': form, 'user' : request.user,}))
 
-
+def handle_uploaded_file(f, name):
+   # file_dest = os.path.join(DATA_ROOT, 'test');
+    data_root = settings.DATA_ROOT
+    file_dest= data_root +"/" + str(name) + ".pdf"
+    destination = open(file_dest, 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
 
 def view_detailed(request, point_id):
     point = Point.objects.get(id = point_id)
     title = point.point
     comments = point.comments.all()
-    dict = {'point': point, 'title': title, 'comments' : comments, 'form' : CommentForm()}
+    file = "/data/" + str(point_id) + ".pdf"
+    dict = {'point': point, 'title': title, 'comments' : comments, 'form' : CommentForm(), 'file': file}
     return render_to_response('site/details.html',  RequestContext(request,dict))
 
 def add_comment(request, point_id):
@@ -67,3 +79,7 @@ def add_comment(request, point_id):
         comment.save()
 
     return HttpResponseRedirect(reverse("map_info.views.view_detailed", args=[point_id]))
+
+
+def get_file(request, file):
+    return redirect('/media/data/' + file, request)

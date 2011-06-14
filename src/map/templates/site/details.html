@@ -29,6 +29,9 @@
 
 {% block right %}
 
+    <div id="viewpdf" >
+		<embed id = "pdf-viewer" src="{% url django.views.static.serve file %}" >
+	</div>
 
     {% block comments %}
 
