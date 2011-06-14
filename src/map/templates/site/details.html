@@ -42,7 +42,7 @@
                     <dl id="comments-block" class="avatar-comment-indent">
 
                         <dt class="comment-author">
-                            <a rel="nofollow" href="link to the profile">{{ comment.author }}</a> said...
+                            <a rel="nofollow" href="{% url accounts.views.public comment.author%}">{{ comment.author }}</a> said...
                         </dt>
 
                         <dd class="comment-body">

@@ -34,4 +34,7 @@ urlpatterns = patterns('',
 
                         (r'^profile/$',
                         'accounts.views.profile'),
+
+                        (r'^public/(?P<name>[^&]+)/$',
+                        'accounts.views.public'),
 )

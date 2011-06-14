@@ -110,3 +110,14 @@ def logout(request):
 @login_required
 def profile(request):
     return render_to_response('accounts/profile.html')
+
+@login_required
+def public(request, name):
+    try:
+        user = User.objects.get(username = name)
+    except:
+        title = "Error"
+        msg = "User doesn't exist"
+        return render_to_response('site/msg.html', {'title' : title,'msg': msg, 'user' : request.user,})
+    context_instance=RequestContext(request, {'name': name})
+    return render_to_response('accounts/public_profile.html', context_instance)
