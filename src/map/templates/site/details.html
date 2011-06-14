@@ -2,36 +2,89 @@
 
 {% block title%}{{ title }}{% endblock %}
 
-{% block right %}
-    Subject: {{ point.subject }}
-    <br/>
-    Description : {{ point.description }}
-    <br/>
-    Report date: {{ point.report_date }}
+{% block style %}
+    <style media="screen" type="text/css">
+         #left h1{
+            font-size: 100%;
+         }
+    </style>
+        
+{% endblock %}
 
+{% block left%}
+    <h1>Layer:</h1> {{ point.layer }}<br/>
+
+    <h1>Report date:</h1> {{ point.report_date }}<br/>
+
+    <h1>Added at:</h1> {{ point.date_added }}<br/>
+
+    <h1>Added by:</h1> {{ point.user.username }}<br/>
+
+    <h1>Subject:</h1> {{ point.subject }}<br/>
+
+    <h1>Description:</h1> {{ point.description }}<br/>
+
+{% endblock %}
+
+
+{% block right %}
 
 
     {% block comments %}
 
         {% if comments %}
-            <p>Comments:</p>
+
+            <h2>Comments:</h2>
+
+
+            <div id="comments" class="comments">
+                {% for comment in comments %}
+                    <dl id="comments-block" class="avatar-comment-indent">
+
+                        <dt class="comment-author">
+                            <a rel="nofollow" href="link to the profile">{{ comment.author }}</a> said...
+                        </dt>
+
+                        <dd class="comment-body">
+                            {{ comment.body|linebreaks }}
+                        </dd>
+
+                        <dd class="comment-footer">
+                            <span class="comment-timestamp">
+                                {{ comment.created }}
+                            </span>
+                        </dd>
+                    </dl>
+                {% endfor %}
+            </div>
         {% endif %}
 
-        {% for comment in comments %}
-            <div class="comment">
-                <div class="time">{{ comment.created }} | {{ comment.author }}</div>
-                <div class="body">{{ comment.body|linebreaks }}</div>
-            </div>
-        {% endfor %}
+
+
+
+
+        <!-- Avatar -->
+            <!--
+                <div class="avatar-image-container vcard"><span dir="ltr">
+				    <a class="avatar-hovercard"><img width="35" height="35" title="User name" style="" src="http://2.bp.blogspot.com/-bz4W2VIZRCE/Tch0cPzHD7I/AAAAAAAAAGg/3uPuv1zYlpU/s45/profile_blank_gray.jpg">
+
+							<noscript>&lt;img src="http://2.bp.blogspot.com/-bz4W2VIZRCE/Tch0cPzHD7I/AAAAAAAAAGg/3uPuv1zYlpU/s45/profile_blank_gray.jpg" width="35" height="35" class="photo" alt=""&gt;</noscript></a></span>
+			    </div>
+
+		    -->
 
         <div id="addc">Add a comment</div>
         <!-- Comment form  -->
         <form action="{% url map_info.views.add_comment point.id %}" method="POST">{% csrf_token %}
             <div id="cform">
-                <p>{{ form.body|linebreaks }}</p>
+               <!-- <p>{{ form.body|linebreaks }}</p>-->
+                <p>
+                    <textarea id="id_body" name="body" cols="80" rows="6"></textarea>
+                </p>
             </div>
-            <div id="submit"><input type="submit" value="Submit"></div>
+            <div id="submit"><input type="submit" value="Post comment"></div>
         </form>
 
     {% endblock %}
 {% endblock %}
+

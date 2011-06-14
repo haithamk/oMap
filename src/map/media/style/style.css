@@ -11,6 +11,11 @@ body {
 
 #page {
 }
+#username{
+	margin: 0px;
+	float:right;
+	margin-top:0px;
+}
 .clear {
 	clear: both;
 }
@@ -100,5 +105,57 @@ h3 {
 
 .bigmap {
 }
+
+
+
+/*** Comments in Details ***/
+
+ #comments-block{
+        width: 600px;
+    }
+    #comments-block .comment-author {
+        -moz-background-inline-policy: continuous;
+        background: none repeat scroll 0 0 #CCCCCC;
+        border: 1px solid #CCCCCC;
+        font-size: 15px;
+        font-weight: normal;
+        margin-right: 20px;
+        padding: 5px;
+    }
+
+
+
+    #comments-block .comment-body {
+        border-left: 1px solid #CCCCCC;
+        border-right: 1px solid #CCCCCC;
+        margin-left: 0;
+        margin-right: 20px;
+        padding: 7px;
+    }
+
+    #comments-block .comment-body p {
+        margin: 0 0 0.75em;
+    }
+
+
+
+
+    #comments-block .comment-footer {
+        border-bottom: 1px solid #CCCCCC;
+        border-left: 1px solid #CCCCCC;
+        border-right: 1px solid #CCCCCC;
+        font-size: 11px;
+        line-height: 1.4em;
+        margin: -0.25em 20px 2em 0;
+        padding: 5px;
+        text-transform: none;
+    }
+
+
+
+    #comments-block .avatar-image-container img {
+        border: 1px solid #CCCCCC;
+        float: left;
+    }
 
 
