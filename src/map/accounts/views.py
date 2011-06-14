@@ -109,7 +109,7 @@ def logout(request):
 
 @login_required
 def profile(request):
-    return render_to_response('accounts/profile.html')
+    return render_to_response('accounts/profile.html',context_instance=RequestContext(request))
 
 @login_required
 def public(request, name):
