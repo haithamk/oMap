@@ -38,15 +38,20 @@
             {   x = "{{p.point.x}}";
                 y = "{{p.point.y}}";
 
+                var size = new OpenLayers.Size(21, 25);
+		        var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+                var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
+
                 var onClick = function(evt){
                     var pnt = (new OpenLayers.LonLat("{{p.point.x}}","{{p.point.y}}")).transform(
                           new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
                           new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
                           );
-                        popup = new OpenLayers.Popup("chicken",
+                        popup = new OpenLayers.Popup.FramedCloud("chicken",
                           pnt,
                           new OpenLayers.Size(200,200),
                            new String("<b>{{p.subject}}</b> <p>{{p.description}}</p> <p>Date Added: {{p.date_added}}</p> <p>Added By: {{p.user}}</p> <p> <a href=\"{% url map_info.views.view_detailed p.id %}\" > more info </a> </p>"),
+                           icon,
                         true);
                         mapa.addPopup(popup);
                }
