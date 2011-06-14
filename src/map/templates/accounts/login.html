@@ -2,19 +2,23 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Authentication error</p>
-{% endif %}
 
-<form action="{% url accounts.views.mylogin %}" method="post">{% csrf_token %} 
-  {% for field in form %}
+<form action="{% url accounts.views.mylogin %}" method="post">{% csrf_token %}   
   <p>
-    {{ field.label_tag }}: {{ field }}
-    {{ field.errors }}
+    	<label for="id_username">Username</label>: <input id="id_username" name="username" maxlength="30" type="text">
   </p>
-  {% endfor %}
+  
+  <p>
+    	<label for="id_password">Password</label>: <input name="password" id="id_password" type="password">
+  </p>
+  
+  <input name="next" value="map" type="hidden">
+
   <p><input type="submit" value="Login" /></p>
-  <input type="hidden" name="next" value="map" />
 </form>
+
+        {% if msg %}
+            <p>{{ msg }}</p>
+        {% endif %}
 
 {% endblock %}

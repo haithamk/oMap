@@ -5,6 +5,7 @@ from django.contrib.auth import views
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.contrib.auth import logout, login
 
 from django.template import RequestContext
 
@@ -25,9 +26,20 @@ from map_info.models import Point
 
 def mylogin(request):
     if request.method=='GET':
-        return views.login(request, 'accounts/login.html', '/map')
+       # return views.login(request, 'accounts/login.html', '/map')
+        return render_to_response('accounts/login.html')
     else:
-        views.login(request)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/map', request)
+            else:
+                 return render_to_response('accounts/login.html', {'msg' : 'Unactivated account'})
+        else:
+            return render_to_response('accounts/login.html', {'msg' : 'Invalid login'})
     return redirect('/map', request)
 
 def add_user(request):
