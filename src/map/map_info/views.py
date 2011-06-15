@@ -67,6 +67,8 @@ def view_detailed(request, point_id):
     dict = {'point': point, 'title': title, 'comments' : comments, 'form' : CommentForm(), 'file': file}
     return render_to_response('site/details.html',  RequestContext(request,dict))
 
+
+
 def add_comment(request, point_id):
     """Add a new comment."""
     p = request.POST

@@ -40,6 +40,7 @@ class Point(models.Model):
     point = models.PointField()
     date_added = models.DateField(auto_now_add=True)
     report_date = models.DateField()
+    address = models.TextField()
     subject = models.TextField()
     description = models.TextField()
     file = models.FilePathField()
