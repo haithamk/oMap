@@ -33,7 +33,6 @@
                         {'displayClass': 'olControlDrawFeaturePoint'});
                 draw_point.featureAdded = function(feature) {
                     document.data.point.value = feature.geometry.getVertices();
-                    alert( feature.geometry.getVertices())
                 }
                 var panelControls = [
                     new OpenLayers.Control.Navigation(),

@@ -33,8 +33,7 @@ def add_point(request):
             point_ = "POINT (12.0722656215841013 -10.3149192839854464)"
             point_ = form.cleaned_data['point']
             date_ = form.cleaned_data['report_date']
-            layers = Layer.objects.all()
-            layer_= layers[0]
+            layer_= form.cleaned_data['layer']
             subject_ = form.cleaned_data['subject']
             description_ = form.cleaned_data['description']
             #file_ = form.cleaned_data['file']
