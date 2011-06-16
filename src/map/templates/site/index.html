@@ -1,5 +1,23 @@
 {% extends "base.html" %}
 
+{% block style %}
+    <style media="screen" type="text/css">
+         #left a{
+            font-size: 100%;
+            text-decoration: none
+         }
+         #left a:hover{
+            font-weight: bold;
+            text-decoration: none
+         }
+        #left #more-info{
+            position: relative;
+            left:160px;
+        }
+    </style>
+
+{% endblock %}
+
 {% block javascript %}
     <script src="http://openlayers.org/api/OpenLayers.js"></script>
     <script type="text/javascript">
@@ -119,3 +137,13 @@
 {% endblock %}
 
 {% block right %}<div id="mapa" class="bigmap" align="center"></div>{% endblock %}
+
+{% block left %}
+    <h2>Recent Points</h2> <br>
+    {% for p in most_recent %}
+        <b>{{p.subject}}</b> <br> <br> <p>Date Added: {{p.date_added}}</p> <br> <p>Added By: {{p.user.username}}</p>
+        <div id="more-info"><a href="{% url map_info.views.view_detailed p.id %}" class="list-nav-link">more info</a></div>
+        <hr align="right" WIDTH="80" >
+       <br>
+    {% endfor %}
+{% endblock %}

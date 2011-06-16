@@ -40,7 +40,7 @@ def mylogin(request):
                  return render_to_response('accounts/login.html', {'msg' : 'Unactivated account'})
         else:
             return render_to_response('accounts/login.html', {'msg' : 'Invalid login'})
-    return redirect('/map', request)
+    return redirect('/map',RequestContext( request))
 
 def add_user(request):
     user = User.objects.create_user('haitham', 'lennon@thebeatles.com', '12345')

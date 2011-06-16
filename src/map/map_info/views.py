@@ -4,15 +4,19 @@ from map_info.forms import AddPointForm, CommentForm
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.conf import settings
+import os
 
 def main(request):
+
     all_points = list(Point.objects.all())
     # TODO check what is the type of the user and redirect to the suitable home page
-
+    most_recent = list(Point.objects.values().order_by('date_added')[0:3])
+    hot_topics = list(Point.objects.values().order_by('views_count')[0:3])
     if request.user.is_authenticated():
-        dict = {'user': request.user, 'points': all_points}
+        user = request.user
     else:
-        dict = {'user': None, 'points': all_points}
+        user = None
+    dict = {'user': user, 'points': all_points, 'most_recent': most_recent, 'hot_topics' : hot_topics}
     return render_to_response('site/index.html',  RequestContext(request,dict))
 
 
@@ -41,18 +45,22 @@ def add_point(request):
             data = Point(user = request.user, layer = layer_, point = point_, subject = subject_, description= description_, file =file_, report_date = date_, views_count = 0)
             data.save()
             id = data.id
-            handle_uploaded_file(request.FILES['file'], id)
+
+            file_name = request.FILES['file'].name
+            handle_uploaded_file(request.FILES['file'], id, file_name)
             
             return redirect('/map/', request)
-        return render_to_response('site/add_point.html', {'form': form,})
+        return render_to_response('site/add_point.html', RequestContext(request,{'form': form,}))
     else:
         form = AddPointForm()
         return render_to_response('site/add_point.html', RequestContext(request, {'form': form, 'user' : request.user,}))
 
-def handle_uploaded_file(f, name):
+def handle_uploaded_file(f, id, file_name):
    # file_dest = os.path.join(DATA_ROOT, 'test');
-    data_root = settings.DATA_ROOT
-    file_dest= data_root +"/" + str(name) + ".pdf"
+    data_root = os.path.join(settings.DATA_ROOT, str(id))
+    if not os.path.exists(data_root):
+        os.makedirs(data_root)
+    file_dest= data_root +"/" +  file_name
     destination = open(file_dest, 'wb+')
     for chunk in f.chunks():
         destination.write(chunk)
@@ -62,7 +70,10 @@ def view_detailed(request, point_id):
     point = Point.objects.get(id = point_id)
     title = point.point
     comments = point.comments.all()
-    file = "/data/" + str(point_id) + ".pdf"
+    path = settings.MEDIA_ROOT + "/data/" + str(point_id)
+    dirList=os.listdir(path)
+   # file = "data/" + str(point_id) + ".pdf"
+    file = "data/" + str(point_id) + "/" + dirList[0]
     dict = {'point': point, 'title': title, 'comments' : comments, 'form' : CommentForm(), 'file': file}
     return render_to_response('site/details.html',  RequestContext(request,dict))
 

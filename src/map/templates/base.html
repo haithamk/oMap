@@ -64,12 +64,12 @@
                 <div id="left">
                     {% block left %}
                         <h2>Recent Points</h2> <br><br>
-                        {% for p in points %}
+                        {% for p in most_recent %}
                             <b>{{p.subject}}</b> <br> <br> <p>{{p.description}}</p> <br> <p>Date Added: {{p.date_added}}</p> <br> <p>Added By: {{p.user}}</p>
                             <br> <li><a href="{% url map_info.views.view_detailed p.id %}" class="list-nav-link">more info..</a></li>
                             <br> <hr /> <br>
                         {% endfor %}
-                        <p class="italic">This bar will display the recent posts in the future</p> {% endblock %}
+                    {% endblock %}
                 </div>
 
                 <div id="right">

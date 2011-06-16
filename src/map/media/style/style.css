@@ -27,6 +27,7 @@ body {
 }
 #bg2 {
 	background: url("/media/img/prechod2.png") top left repeat-x;
+	/*background: url("/media/img/site_background.jpg") top left repeat-x;*/
 	padding: 10px;
 }
 #menu {
@@ -49,6 +50,9 @@ h3 {
 	padding-top: 1ex;
 	padding-bottom: 1ex;
 }
+
+
+
 #menu ul {
 	list-style-type: none;
 }
@@ -57,6 +61,7 @@ h3 {
 	margin-right: 5px;
 }
 #menu a {
+	
 	display: block;
 	text-decoration: none;
 	padding: 5px;
@@ -66,7 +71,12 @@ h3 {
 }
 #menu a:hover {
 	font-weight: bold;
+	position:relative;
+	top:-5px;
 }
+
+
+
 #content, #footer {
 	padding-top: 20px;
 	font-size: small;
