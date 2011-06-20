@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'gunicorn',
     'accounts',
     'django.contrib.gis',
     'piston',

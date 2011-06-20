@@ -133,3 +133,14 @@ def public(request, name):
         return render_to_response('site/msg.html', {'title' : title,'msg': msg, 'user' : request.user,})
     context_instance=RequestContext(request, {'name': name})
     return render_to_response('accounts/public_profile.html', context_instance)
+
+def user_comments(request, name):
+    comments =  User.objects.get(username = name).comments.all()
+    context_instance=RequestContext(request, {'comments': comments})
+    return render_to_response('accounts/user_comments.html', context_instance)
+
+def user_points(request, name):
+    points =  User.objects.get(username = name).points.all()
+    context_instance=RequestContext(request, {'points': points})
+    return render_to_response('accounts/user_points.html', context_instance)
+

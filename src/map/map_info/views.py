@@ -10,8 +10,8 @@ def main(request):
 
     all_points = list(Point.objects.all())
     # TODO check what is the type of the user and redirect to the suitable home page
-    most_recent = list(Point.objects.values().order_by('date_added')[0:3])
-    hot_topics = list(Point.objects.values().order_by('views_count')[0:3])
+    most_recent = list(Point.objects.all().order_by('-date_added')[0:3])
+    hot_topics = list(Point.objects.all().order_by('-views_count')[0:3])
     if request.user.is_authenticated():
         user = request.user
     else:
@@ -68,6 +68,8 @@ def handle_uploaded_file(f, id, file_name):
 
 def view_detailed(request, point_id):
     point = Point.objects.get(id = point_id)
+    point.views_count = point.views_count + 1
+    point.save()
     title = point.point
     comments = point.comments.all()
     path = settings.MEDIA_ROOT + "/data/" + str(point_id)

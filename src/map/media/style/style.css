@@ -95,6 +95,24 @@ h3 {
 	border-bottom: 1px dotted #c0c0c0;
 }
 
+
+#left li {
+	margin-top: 8px;
+	border-style: double;
+}
+
+#left a{
+	display: block;
+	text-decoration: none;
+	padding: 5px;
+	font-size:14px;
+}
+
+#left a:hover {
+	font-weight: bold;
+}
+
+
 #right {
 	margin-left: 20em;
 	min-height: 300px;

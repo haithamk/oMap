@@ -1,0 +1,19 @@
+<html>
+<head>
+    <style media="screen" type="text/css">
+
+    </style>
+
+
+</head>
+<body>
+    <h2>Points:</h2>
+     {% for p in points %}
+        <b>{{p.subject}}</b> <br> <br> <p>Date Added: {{p.date_added}}</p> <br>
+        <div id="more-info"><a href="{% url map_info.views.view_detailed p.id %}" class="list-nav-link" target="_parent" >more info</a></div>
+
+       <hr align="center" WIDTH="400" >
+       <br>
+    {% endfor %}
+</body>
+</html>

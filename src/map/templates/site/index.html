@@ -34,6 +34,7 @@
                 new OpenLayers.Control.Attribution()
             ]};
 
+
             mapa = new OpenLayers.Map('mapa', options);
             layer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
                 "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'} );
@@ -87,7 +88,17 @@
 
             {% endfor %}
 
+
+
+
+
+
             mapa.addControl(new OpenLayers.Control.LayerSwitcher());
+         /*
+            var measure_tool = new OpenLayers.Control.MeasureToolbar();
+            mapa.addControl(measure_tool);
+            measure_tool.activate();
+        */
 
        /*
                 Navigate to home!!
@@ -141,7 +152,16 @@
 {% block left %}
     <h2>Recent Points</h2> <br>
     {% for p in most_recent %}
-        <b>{{p.subject}}</b> <br> <br> <p>Date Added: {{p.date_added}}</p> <br> <p>Added By: {{p.user.username}}</p>
+        <b>{{p.subject}}</b> <br> <br> <p>Date Added: {{p.date_added}}</p> <br>
+        <p>Added By: <a rel="nofollow" href="{% url accounts.views.public p.user.username%}">{{ p.user.username }}</a></p>
+        <div id="more-info"><a href="{% url map_info.views.view_detailed p.id %}" class="list-nav-link">more info</a></div>
+        <hr align="right" WIDTH="80" >
+       <br>
+    {% endfor %}
+    <h2>Most Visited Points</h2> <br>
+    {% for p in hot_topics %}
+        <b>{{p.subject}}</b> <br> <br> <p>Date Added: {{p.date_added}}</p> <br>
+        <p>Added By: <a rel="nofollow" href="{% url accounts.views.public p.user.username%}">{{ p.user.username }}</a></p>
         <div id="more-info"><a href="{% url map_info.views.view_detailed p.id %}" class="list-nav-link">more info</a></div>
         <hr align="right" WIDTH="80" >
        <br>

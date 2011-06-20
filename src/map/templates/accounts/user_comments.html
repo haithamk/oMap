@@ -1,0 +1,88 @@
+<html>
+<head>
+    <style media="screen" type="text/css">
+        #comments-block{
+               width: 600px;
+           }
+           #comments-block .comment-author {
+               -moz-background-inline-policy: continuous;
+               background: none repeat scroll 0 0 #CCCCCC;
+               border: 1px solid #CCCCCC;
+               font-size: 15px;
+               font-weight: normal;
+               margin-right: 20px;
+               padding: 5px;
+           }
+
+
+
+           #comments-block .comment-body {
+               border-left: 1px solid #CCCCCC;
+               border-right: 1px solid #CCCCCC;
+               margin-left: 0;
+               margin-right: 20px;
+               padding: 7px;
+           }
+
+           #comments-block .comment-body p {
+               margin: 0 0 0.75em;
+           }
+
+
+
+
+           #comments-block .comment-footer {
+               border-bottom: 1px solid #CCCCCC;
+               border-left: 1px solid #CCCCCC;
+               border-right: 1px solid #CCCCCC;
+               font-size: 11px;
+               line-height: 1.4em;
+               margin: -0.25em 20px 2em 0;
+               padding: 5px;
+               text-transform: none;
+           }
+    </style>
+
+
+</head>
+<body>
+
+ {% block comments %}
+
+        {% if comments %}
+
+            <h2>Comments:</h2>
+
+
+            <div id="comments" class="comments">
+                {% for comment in comments %}
+                    <dl id="comments-block" class="avatar-comment-indent">
+
+                        <dt class="comment-author">
+                            {{ comment.author }} said...
+                        </dt>
+
+                        <dd class="comment-body">
+                            {{ comment.body|linebreaks }}
+                        </dd>
+
+                        <dd class="comment-footer">
+                            <span class="comment-timestamp">
+                                {{ comment.created }}
+                            </span>
+                            <span>
+                                <div id="more-info" align="right"><a href="{% url map_info.views.view_detailed comment.point.id %}" class="list-nav-link" target="_parent" >go to post</a></div>
+                            </span>
+                        </dd>
+                    </dl>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+    {% endblock %}
+
+
+
+</body>
+</html>

@@ -39,10 +39,12 @@
 
                         {% else %}
                             <li><a href="{% url accounts.views.mylogin %}" class="list-nav-link">Log in</a></li>
+                            <li><a href="{% url accounts.views.signup %}" class="list-nav-link">Sign Up</a></li>
                         {% endif %}
 
                      {% else %}
                         <li><a href="{% url accounts.views.mylogin %}" class="list-nav-link">Log in</a></li>
+                        <li><a href="{% url accounts.views.signup %}" class="list-nav-link">Sign Up</a></li>
                     {% endif %}
                 </ul>
                 {% if user.is_authenticated %}

@@ -37,4 +37,10 @@ urlpatterns = patterns('',
 
                         (r'^public/(?P<name>[^&]+)/$',
                         'accounts.views.public'),
+
+                        (r'^user-comments/(?P<name>[^&]+)/$',
+                        'accounts.views.user_comments'),
+
+                         (r'^user-points/(?P<name>[^&]+)/$',
+                        'accounts.views.user_points'),
 )
