@@ -26,13 +26,15 @@
 {% block left %}
         <ul id="user-profile-nav">
             <li><a  onclick="frames['IFrameName'].location.href='{%url accounts.views.user_comments user.username %}'" class="user-profile-nav-link" title="comments">Comments</a></li>
-            <li><a  onclick="frames['IFrameName'].location.href='{%url accounts.views.user_points user.username %}'" class="user-profile-nav-link" title="points">Points</a></li>
+            {% if perms.map_info %}
+                <li><a  onclick="frames['IFrameName'].location.href='{%url accounts.views.user_points user.username %}'" class="user-profile-nav-link" title="points">Points</a></li>
+            {% endif %}
         </ul>
 {% endblock %}
 
 
 {% block right %}
-        <iframe name="IFrameName" id="IFrameName" src = "{%url accounts.views.user_points user.username %}" >
+        <iframe name="IFrameName" id="IFrameName" src = "{%url accounts.views.user_comments user.username %}" >
         </iframe>
 <!--src="{%url accounts.views.user_comments user.username %}"-->
 {% endblock %}
