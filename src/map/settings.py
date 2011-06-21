@@ -1,6 +1,10 @@
 import os
 import os.path
+import sys
 # Django settings for map project.
+
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/..' )
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -138,7 +142,8 @@ INSTALLED_APPS = (
     'accounts',
     'django.contrib.gis',
     'piston',
-    'map_info',     # in python we always have a comma at the end of the list 
+    'map_info',
+    'django.contrib.admindocs',
 )
 
 # A sample logging configuration. The only tangible logging

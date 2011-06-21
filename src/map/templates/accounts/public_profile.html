@@ -1,5 +1,37 @@
 {% extends "base.html" %}
 
+{% block title%}{{ name }} Profile{% endblock %}
+
+{% block style %}
+    <style media="screen" type="text/css">
+         #IFrameName{
+            width: 900px;
+            height: 600px;
+            border-style: none;
+         }
+
+
+    </style>
+ {% endblock %}
+
+ {% block javascript %}
+    <script type="text/javascript">
+        function change_parent_url(url)
+        {
+	    document.location=url;
+        }
+    </script>
+  {% endblock %}
+
+{% block left %}
+        <ul id="user-profile-nav">
+            <li><a  onclick="frames['IFrameName'].location.href='{%url accounts.views.user_comments name %}'" class="user-profile-nav-link" title="comments">Comments</a></li>
+        </ul>
+{% endblock %}
+
+
 {% block right %}
-        Public profile of user {{ name }}
+        <iframe name="IFrameName" id="IFrameName" src = "{%url accounts.views.user_comments name %}" >
+        </iframe>
+<!--src="{%url accounts.views.user_comments user.username %}"-->
 {% endblock %}

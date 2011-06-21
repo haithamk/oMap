@@ -1,12 +1,8 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
-#                        (r'^login/$', 'django.contrib.auth.views.login')
                         (r'^login/$',
-                        #'django.contrib.auth.views.login',
                         "accounts.views.mylogin"),
-                       # {'template_name': 'accounts/login.html',
-                       #  'redirect_field_name': 'accounts/profile'}),
 
                         (r'^signup/$',
                         'accounts.views.signup',
@@ -25,12 +21,7 @@ urlpatterns = patterns('',
                         {'template_name': 'accounts/signup_complete.html'}),
 
                        (r'^logout/$',
-                        #'django.contrib.auth.views.login',
                         "accounts.views.logout"),
-
-
-
-
 
                         (r'^profile/$',
                         'accounts.views.profile'),

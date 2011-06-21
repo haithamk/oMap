@@ -11,6 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^map/', include('map_info.urls')),
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     (r'^accounts/', include('accounts.urls')),
     (r'^api/', include('api.urls'), { 'emitter_format': 'json' }),

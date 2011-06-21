@@ -7,6 +7,19 @@ from django import forms
 from django.core.mail import send_mail
 
 class UserCreationForm(forms.ModelForm):
+
+    """New users registeration form
+
+     Used to add new users to the database.
+     class variables:
+       username: the desired user name. must be unique.
+       password1, password2: account password. password1 and password2 must be
+         equal.
+       email1, email2: account email. must be valid email. email11 & email2
+         must be equal.
+
+     """
+    
     username = forms.RegexField(label="Username", max_length=30, regex=r'^[\w.@+-]+$',
                                 help_text="Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.",
                                 error_messages = {'invalid': "This value may contain only letters, numbers and @/./+/-/_ characters."})
@@ -16,6 +29,7 @@ class UserCreationForm(forms.ModelForm):
     email1 = forms.EmailField(label="Email", max_length=75)
     email2 = forms.EmailField(label="Email confirmation", max_length=75,
                               help_text = "Enter your email address again. A confirmation email will be sent to this address.")
+
 
     class Meta:
         model = User
