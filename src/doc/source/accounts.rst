@@ -23,3 +23,9 @@ Views
 -----
 .. automodule:: map.accounts.views
    :members:
+
+
+Forms
+-----
+.. automodule:: map.accounts.forms
+   :members:

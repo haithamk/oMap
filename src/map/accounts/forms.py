@@ -21,11 +21,6 @@ class UserCreationForm(forms.ModelForm):
      :param password/password2: account password. password1 and password2 must be equal.
      :param email1/email2: account email. must be valid email. email11 & email2 must be equal.
 
-     .. note::
-          Hello!
-     .. seealso::
-        Hoooo
-
      """
 
     username = forms.RegexField(label="Username", max_length=30, regex=r'^[\w.@+-]+$',
