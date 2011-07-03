@@ -1,4 +1,4 @@
-from map_info.models import Point, Layer, Comment
+from map.map_info.models import Point, Layer, Comment
 from django.contrib.gis import admin
 
 class LayerAdmin(admin.OSMGeoAdmin):

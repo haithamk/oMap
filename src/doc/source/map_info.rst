@@ -25,7 +25,17 @@ Views
 .. automodule:: map.map_info.views
    :members:
 
-Layers Names
-************
+
+Forms
+-----
+.. automodule:: map.map_info.forms
+   :members:
+
+
+Admin
+-----
+.. automodule:: map.map_info.admin
+   :members:
+
 
 

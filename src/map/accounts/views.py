@@ -7,12 +7,12 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.auth import logout, login
 from django.template import RequestContext
-from accounts.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.utils.http import base36_to_int
 from django.conf import settings
 
-from map_info.models import Point
+from map.map_info.models import Point
+from map.accounts.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 
 
@@ -20,11 +20,13 @@ from django.core.urlresolvers import reverse
 def mylogin(request):
     """Login handling method
 
-    if the request method is GET then the method will return a rendered login
+    if the request method is GET then the method will return a rendered login\
     page: accounts/login.html
-    else (POST request) the method will try login the user. if it succeed
-    (usename and passowrd are correct) it will redirect him to the home page
+
+    else (POST request) the method will try login the user. if it succeed\
+    (usename and passowrd are correct) it will redirect him to the home page\
     otherwise it will return the login page with error message.
+    
     """
 
     if request.method=='GET':
@@ -50,19 +52,18 @@ def signup(request, template_name='registration/signup.html',
            signup_form=UserCreationForm,
            token_generator=default_token_generator,
            post_signup_redirect=None):
-    """handles sigup requests
+    """handles sigup requests.
 
     if the request method is GET the method returns the sigup page.
     if the request method is POST the method validates the login form, and if
     it's valid a confirmation email will be sent to the user and he will be
     redriected to a page telling him that the process finished.
 
-    Arguments:
-    -template_name: signup template name.
-    -email_template_name: confirmation email template.
-    -signup_form: signup form.
-    -token_generator: confirmation special token generator.
-    -post_signup_redirect: the page to redirect to upon successful process
+    :param template_name: signup template name.
+    :param email_template_name: confirmation email template.
+    :param signup_form: signup form.
+    :param token_generator: confirmation special token generator.
+    :param post_signup_redirect: the page to redirect to upon successful process
 
     """
 
@@ -92,7 +93,7 @@ def signup_done(request, template_name='registration/signup_done.html'):
 def signup_confirm(request, uidb36=None, token=None,
                    token_generator=default_token_generator,
                    post_signup_redirect=None):
-    """ handles confirmation links
+    """ handles confirmation links.
 
     checks if the confirmation code provided is real. if so, it activates the
     user associated with this code and redirect him to the signup complete page
@@ -119,9 +120,9 @@ def signup_confirm(request, uidb36=None, token=None,
     return HttpResponseRedirect(post_signup_redirect)
 
 def signup_complete(request, template_name='registration/signup_complete.html'):
-    """signup success page
+    """signup success page.
 
-     the users reach this page if they pressed on a real confirmation link
+     the users reach this page if they pressed on a real confirmation link.
 
      """
 
@@ -145,10 +146,9 @@ def profile(request):
 def public(request, name):
     """returns the public profile of a user
 
-     Arguments:
-     -name: the user name to return his public profile
+    :param name: the user name to return his public profile
 
-     """
+    """
 
     try:
         user = User.objects.get(username = name)
@@ -160,14 +160,22 @@ def public(request, name):
     return render_to_response('accounts/public_profile.html', context_instance)
 
 def user_comments(request, name):
-    """returns a rendered page with the user comments """
+    """returns a rendered page with the user comments
+
+    :param name: the user name.
+
+    """
 
     comments =  User.objects.get(username = name).comments.all()
     context_instance=RequestContext(request, {'comments': comments})
     return render_to_response('accounts/user_comments.html', context_instance)
 
 def user_points(request, name):
-    """returns a rendered page with the user points"""
+    """returns a rendered page with the user points
+
+    :param name: the user name.
+
+    """
 
     points =  User.objects.get(username = name).points.all()
     context_instance=RequestContext(request, {'points': points})

@@ -1,6 +1,4 @@
 """
-Models and Manager for map information
-======================================
 
 >>> miki= User.objects.create_user('miki', 'miki', 'miki')
 >>> layer=Layer.objects.create(name='first layer', description='This is the first layer',owner=miki)
