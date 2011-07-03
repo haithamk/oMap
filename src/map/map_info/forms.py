@@ -1,5 +1,5 @@
 from django import forms
-from map_info.models import Layer, Comment
+from map.map_info.models import Layer, Comment
 
 class AddPointForm(forms.Form):
     

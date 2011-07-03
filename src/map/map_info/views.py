@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, redirect, HttpResponseRedirect
-from map_info.models import Point, Layer, Comment
-from map_info.forms import AddPointForm, CommentForm
+from map.map_info.models import Point, Layer, Comment
+from map.map_info.forms import AddPointForm, CommentForm
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -9,7 +9,7 @@ import os
 def main(request):
     """ returns home page rendered html.
 
-    renderer the index.html page according to the context of the request and
+    renderer the index.html page according to the context of the request and\
     returns it to the user.
 
     """
@@ -81,12 +81,12 @@ def add_point(request):
 def handle_uploaded_file(f, id, file_name):
     """Saves a file to the disk.
 
-    Arguments:
-    -f: file.
-    id: id of the point for the file.
-    file_name: the file name.
 
-    The method creates a new directory under media/data with the id as a name
+    :param f: file.
+    :param id: id of the point for the file.
+    :param file_name: the file name.
+
+    The method creates a new directory under media/data with the id as a name\
     and saves the file (f) to the new directory with the name: file_name.
 
     """
@@ -103,8 +103,7 @@ def handle_uploaded_file(f, id, file_name):
 def view_detailed(request, point_id):
     """ views the full details of a point.
 
-    Arguments:
-    -point_id: a point id to view.
+    :param point_id: a point id to view.
 
     returns a rendered page of site/details.html for the received point id.
     the point details are retrieved from the data base and the  data file path
@@ -126,8 +125,7 @@ def view_detailed(request, point_id):
 def add_comment(request, point_id):
     """ add new comment.
 
-    Arguments:
-    -point_id: the id of the point to the the comment to.
+    :param point_id: the id of the point to the the comment to.
 
     handles POST requests. the request is to add a new comment. the request
     specifies the comment text. the comment is added to the data base and will
@@ -151,8 +149,7 @@ def add_comment(request, point_id):
 def get_file(request, file):
     """ returns static files
 
-    Arguments:
-    -file: relative file path, relative to the media dir.
+    :param file: relative file path, relative to the media dir.
     
     """
     

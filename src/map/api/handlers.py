@@ -1,5 +1,5 @@
 from piston.handler import BaseHandler, AnonymousBaseHandler
-from map_info.models import Point, Layer
+from map.map_info.models import Point, Layer
 from django.contrib.auth.models import User
 from django.contrib.gis.measure import D  # ``D`` is a shortcut for ``Distance``
 
@@ -18,8 +18,11 @@ class GetLayersNamesAnonymousHandler(AnonymousBaseHandler):
 class GetLayersNamesHandler(BaseHandler):
     """Authenticated users handler for layers info.
 
-    Authenticated users have a read access to the layers names,
+    Authenticated users have a read access to the layers names.
+
+.. note::
     Write and update access are not available at this stage.
+
 
     """
 
@@ -29,7 +32,11 @@ class GetLayersNamesHandler(BaseHandler):
     fields = ('name', )
 
     def read(self, request):
-        """returns all layers."""
+        """returns all layers.
+
+        :returns: A list of the layers.
+
+        """
         
         return Layer.objects.all()
 
@@ -52,11 +59,16 @@ class SearchWithinHandler(BaseHandler):
     """Authenticated user handler for search within quires.
 
     Searches for all points inside the borders of a given polygon.
+
     Authenticated request have read access to:
-      subject, description, point, address, date_added, report_date, layer,
-      name, id.
+     subject, description, point, address, date_added, report_date, layer, name, id.
+
+    .. note::
      Write and update access are not available at this stage.
-     'api handler for point/search/layer=<layer>&within=<polygon>'
+
+    .. note::
+     'link for this method point/search/layer=<layer>&within=<polygon>'
+
 
     """
 
@@ -71,9 +83,9 @@ class SearchWithinHandler(BaseHandler):
     def read(self, request, layer_name, polygon):
         """ returns all points of a given layer inside a given polygon.
 
-        Keyword arguments:
-        layer_name: the layer name.
-        polygon: the polygon.
+        :param layer_name: the layer name.
+        :param polygon: the polygon.
+        :returns: list of points.
 
         """
 
@@ -101,11 +113,16 @@ class SearchAroundHandler(BaseHandler):
     """Authenticated user handler for search around quires.
 
     Searches for all points with a given distance from a given point.
+    
     Authenticated request have read access to:
-      subject, description, point, address, date_added, report_date, layer,
-      name, id.
-    Write and update access are not available at this stage.
-    'api handler for point/search/layer=<layer>&around=<point>&r=<distance>'
+     subject, description, point, address, date_added, report_date, layer,name, id.
+
+    .. note::
+     Write and update access are not available at this stage.
+
+    .. note::
+     'link for this method point/search/layer=<layer>&around=<point>&r=<distance>'
+
 
     """
 
@@ -119,10 +136,10 @@ class SearchAroundHandler(BaseHandler):
     def read(self, request, layer_name, point, distance):
         """returns points in a given distance from a given point in given layer
 
-        Keyword arguments:
-        layer_name: the layer name.
-        point: the point. The center of the circle.
-        distance: the radius of the circle.
+        :param layer_name: the layer name.
+        :param point: the point. The center of the circle.
+        :param distance: the radius of the circle.
+        :returns: list of points.
         
         """
         pnt = "POINT (19.0722656215841013 -10.3149192839854464)"

@@ -6,20 +6,28 @@ from django.template import Context, loader
 from django import forms
 from django.core.mail import send_mail
 
+
+
+__module__ = "accounts"
+
+
 class UserCreationForm(forms.ModelForm):
 
-    """New users registeration form
+    """New users registeration form.
 
      Used to add new users to the database.
-     class variables:
-       username: the desired user name. must be unique.
-       password1, password2: account password. password1 and password2 must be
-         equal.
-       email1, email2: account email. must be valid email. email11 & email2
-         must be equal.
+
+     :param username: the desired user name. must be unique.
+     :param password/password2: account password. password1 and password2 must be equal.
+     :param email1/email2: account email. must be valid email. email11 & email2 must be equal.
+
+     .. note::
+          Hello!
+     .. seealso::
+        Hoooo
 
      """
-    
+
     username = forms.RegexField(label="Username", max_length=30, regex=r'^[\w.@+-]+$',
                                 help_text="Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.",
                                 error_messages = {'invalid': "This value may contain only letters, numbers and @/./+/-/_ characters."})
