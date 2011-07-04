@@ -91,6 +91,7 @@ class SearchWithinHandler(BaseHandler):
 
         poly = "POLYGON((-70 80, -50 -75, 160 -70, 160 70, -70 80))"
         poly2 = "POLYGON((30 40, 30 25, 40 25, 40 40, 30 40))"
+        poly = polygon
         return Layer.objects.get(name = layer_name).points.filter(
             point__within = poly)
 
@@ -142,8 +143,9 @@ class SearchAroundHandler(BaseHandler):
         :returns: list of points.
         
         """
-        pnt = "POINT (19.0722656215841013 -10.3149192839854464)"
-        dst = D(m=5)
+        pnt = "POINT (35.0722656215841013 32.3149192839854464)"
+        pnt = point
+        dst = D(m=int(distance))
         return Layer.objects.get(name = layer_name).points.filter(
             point__distance_lte=(pnt, dst))
 

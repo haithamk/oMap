@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>map.map_info.models &mdash; oMap v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="oMap v1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">oMap v1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for map.map_info.models</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Models and Manager for map information</span>
+<span class="sd">======================================</span>
+
+<span class="sd">&gt;&gt;&gt; miki= User.objects.create_user(&#39;miki&#39;, &#39;miki&#39;, &#39;miki&#39;)</span>
+<span class="sd">&gt;&gt;&gt; layer=Layer.objects.create(name=&#39;first layer&#39;, description=&#39;This is the first layer&#39;,owner=miki)</span>
+<span class="sd">&gt;&gt;&gt; point=SimplePoint.objects.create(name=&#39;a point&#39;, description=&#39;This is the first point&#39;, layer=layer,</span>
+<span class="sd">&gt;&gt;&gt;                                  owner=miki, point=...)</span>
+<span class="sd">&gt;&gt;&gt; points=layer.points.all()</span>
+<span class="sd">&gt;&gt;&gt; points.count()</span>
+<span class="sd">1</span>
+<span class="sd">&gt;&gt;&gt; points[0].name</span>
+<span class="sd">a point</span>
+<span class="sd">&gt;&gt;&gt; areas=layer.areas.all()</span>
+<span class="sd">&gt;&gt;&gt; areas.count()</span>
+<span class="sd">0</span>
+<span class="sd">&gt;&gt;&gt; area=SimpleArea.objects.create(name=&#39;an area&#39;, description=&#39;This is the first area&#39;, layer=layer, </span>
+<span class="sd">                                   polygon=....)</span>
+<span class="sd">&gt;&gt;&gt; areas.count()</span>
+<span class="sd">1</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.gis.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../map_info.html#map.map_info.models.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Layers model</span>
+
+<span class="sd">    holds information about the supported layers. each layer has a unique name</span>
+<span class="sd">    which is it&#39;s primary key. and a reference to the user who created it.</span>
+
+<span class="sd">    Layer has related key called points for that retrieves the points of the </span>
+<span class="sd">    layer.</span>
+
+<span class="sd">    class variables:</span>
+<span class="sd">    -name: layer name, string.</span>
+<span class="sd">    -owner: the user who created the layer, User.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s">&quot;Layer name:&quot;</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;layers&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span>  <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+
+
+</div>
+<div class="viewcode-block" id="Point"><a class="viewcode-back" href="../../../map_info.html#map.map_info.models.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Data holder.</span>
+
+<span class="sd">    Point instance holds the data and metadata of 1 report. points has an</span>
+<span class="sd">    automatic id as primary key.</span>
+
+<span class="sd">    Point has 2 related names:</span>
+<span class="sd">    -User with related_name=&#39;points&#39;</span>
+<span class="sd">    -Layer with related_name=&#39;points&#39;</span>
+
+<span class="sd">     class variables:</span>
+<span class="sd">     -layer: the layer of the point. determined by the type of data.And defined</span>
+<span class="sd">       by a foreign key to a layer model.</span>
+<span class="sd">     -user: the user who added the point. a foreign key to a User model.</span>
+<span class="sd">     -point: a latitude/ longitude point that represent the place of the data</span>
+<span class="sd">       on the map.</span>
+<span class="sd">     -date_added: date of adding the point to the database. Auto generated</span>
+<span class="sd">      field.</span>
+<span class="sd">     -report_date: the date in which the data where collected.</span>
+<span class="sd">     -address: text field, a human readable address.</span>
+<span class="sd">     -subject: the report subject/title (very short, describes the what the</span>
+<span class="sd">      report is all about).</span>
+<span class="sd">      -description: a short description of the data (few sentences)</span>
+<span class="sd">      -file: DEPRECATED a path to the data file on the hard disk (not in use</span>
+<span class="sd">       currently).</span>
+<span class="sd">      -view_count: counter for how many times the point was viewed.</span>
+<span class="sd">      -objects: used by geodjango. enables geographical queries.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Layer</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;points&#39;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;points&#39;</span><span class="p">)</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PointField</span><span class="p">()</span>
+    <span class="n">date_added</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">report_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FilePathField</span><span class="p">()</span>
+    <span class="n">views_count</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GeoManager</span><span class="p">()</span>
+
+     <span class="c">#TODO  add more fields and base methods</span>
+
+</div>
+<div class="viewcode-block" id="Comment"><a class="viewcode-back" href="../../../map_info.html#map.map_info.models.Comment">[docs]</a><span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; Represents a comment on some point.</span>
+
+<span class="sd">    represents a text entered by a user as a comment on some point.</span>
+
+<span class="sd">    Class variables:</span>
+<span class="sd">    -created: date of the comment. auto generated field.</span>
+<span class="sd">    -author: the author of the comment.</span>
+<span class="sd">    -body: the text of the comment.</span>
+<span class="sd">    point: the point that this comment was made on.</span>
+
+<span class="sd">    Comment model is related to the User model with related_name=&#39;comments&#39;.</span>
+<span class="sd">    And related to the point model with related_name=&#39;comments&#39;</span>
+
+<span class="sd">    All the comments are stored in one table. </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;comments&#39;</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&#39;comments&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">[:</span><span class="mi">60</span><span class="p">]))</span>
+
+</div>
+<div class="viewcode-block" id="Area"><a class="viewcode-back" href="../../../map_info.html#map.map_info.models.Area">[docs]</a><span class="k">class</span> <span class="nc">Area</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;used to describe an area of authority</span>
+
+<span class="sd">    Currently not in use.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">multipolygon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">MultiPolygonField</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">oMap v1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Haitham Khateeb, Yamama Dagash.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

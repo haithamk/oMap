@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API &mdash; oMap v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="oMap v1.0 documentation" href="index.html" />
+    <link rel="prev" title="Accounts" href="accounts.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="accounts.html" title="Accounts"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">oMap v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>You can find some basic API information here.</p>
+<div class="section" id="module-map.api">
+<span id="api-overview"></span><h2>API Overview<a class="headerlink" href="#module-map.api" title="Permalink to this headline">¶</a></h2>
+<p>Database access API.</p>
+<p>The API provides get methods that allows external <strong>read only</strong> access to the data base information.</p>
+<blockquote>
+<div>API created using django-piston.</div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://bitbucket.org/jespern/django-piston/wiki/Documentation">https://bitbucket.org/jespern/django-piston/wiki/Documentation</a></p>
+</div>
+</div>
+<div class="section" id="api-handler-methods">
+<h2>API Handler Methods<a class="headerlink" href="#api-handler-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-map.api.handlers">
+<span id="layers-names"></span><h3>Layers Names<a class="headerlink" href="#module-map.api.handlers" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="map.api.handlers.GetLayersNamesHandler">
+<em class="property">class </em><tt class="descclassname">map.api.handlers.</tt><tt class="descname">GetLayersNamesHandler</tt><a class="reference internal" href="_modules/map/api/handlers.html#GetLayersNamesHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.GetLayersNamesHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticated users handler for layers info.</p>
+<blockquote>
+<div>Authenticated users have a read access to the layers names.</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Write and update access are not available at this stage.</p>
+</div>
+<dl class="attribute">
+<dt id="map.api.handlers.GetLayersNamesHandler.anonymous">
+<tt class="descname">anonymous</tt><a class="headerlink" href="#map.api.handlers.GetLayersNamesHandler.anonymous" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#map.api.handlers.GetLayersNamesAnonymousHandler" title="map.api.handlers.GetLayersNamesAnonymousHandler"><tt class="xref py py-class docutils literal"><span class="pre">GetLayersNamesAnonymousHandler</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="map.api.handlers.GetLayersNamesHandler.model">
+<tt class="descname">model</tt><a class="headerlink" href="#map.api.handlers.GetLayersNamesHandler.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Layer</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="map.api.handlers.GetLayersNamesHandler.read">
+<tt class="descname">read</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/map/api/handlers.html#GetLayersNamesHandler.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.GetLayersNamesHandler.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns all layers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A list of the layers.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="map.api.handlers.GetLayersNamesAnonymousHandler">
+<em class="property">class </em><tt class="descclassname">map.api.handlers.</tt><tt class="descname">GetLayersNamesAnonymousHandler</tt><a class="reference internal" href="_modules/map/api/handlers.html#GetLayersNamesAnonymousHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.GetLayersNamesAnonymousHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Anonymous user handler for layers info.</p>
+<p>Anonymous users have a read access to the layers names.</p>
+<dl class="attribute">
+<dt id="map.api.handlers.GetLayersNamesAnonymousHandler.model">
+<tt class="descname">model</tt><a class="headerlink" href="#map.api.handlers.GetLayersNamesAnonymousHandler.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Layer</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-map.api.handlers">
+<span id="search-within"></span><h3>Search Within<a class="headerlink" href="#module-map.api.handlers" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="map.api.handlers.SearchWithinHandler">
+<em class="property">class </em><tt class="descclassname">map.api.handlers.</tt><tt class="descname">SearchWithinHandler</tt><a class="reference internal" href="_modules/map/api/handlers.html#SearchWithinHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.SearchWithinHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticated user handler for search within quires.</p>
+<p>Searches for all points inside the borders of a given polygon.</p>
+<dl class="docutils">
+<dt>Authenticated request have read access to:</dt>
+<dd>subject, description, point, address, date_added, report_date, layer, name, id.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Write and update access are not available at this stage.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">&#8216;link for this method point/search/layer=&lt;layer&gt;&amp;within=&lt;polygon&gt;&#8217;</p>
+</div>
+<dl class="attribute">
+<dt id="map.api.handlers.SearchWithinHandler.anonymous">
+<tt class="descname">anonymous</tt><a class="headerlink" href="#map.api.handlers.SearchWithinHandler.anonymous" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#map.api.handlers.SearchWithinAnonymousHandler" title="map.api.handlers.SearchWithinAnonymousHandler"><tt class="xref py py-class docutils literal"><span class="pre">SearchWithinAnonymousHandler</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="map.api.handlers.SearchWithinHandler.model">
+<tt class="descname">model</tt><a class="headerlink" href="#map.api.handlers.SearchWithinHandler.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Point</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="map.api.handlers.SearchWithinHandler.read">
+<tt class="descname">read</tt><big>(</big><em>request</em>, <em>layer_name</em>, <em>polygon</em><big>)</big><a class="reference internal" href="_modules/map/api/handlers.html#SearchWithinHandler.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.SearchWithinHandler.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns all points of a given layer inside a given polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>layer_name</strong> &#8211; the layer name.</li>
+<li><strong>polygon</strong> &#8211; the polygon.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="map.api.handlers.SearchWithinAnonymousHandler">
+<em class="property">class </em><tt class="descclassname">map.api.handlers.</tt><tt class="descname">SearchWithinAnonymousHandler</tt><a class="reference internal" href="_modules/map/api/handlers.html#SearchWithinAnonymousHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.SearchWithinAnonymousHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Anonymous user handler for search within quires.</p>
+<p>Anonymous user can see only the points id and layer.</p>
+<dl class="attribute">
+<dt id="map.api.handlers.SearchWithinAnonymousHandler.model">
+<tt class="descname">model</tt><a class="headerlink" href="#map.api.handlers.SearchWithinAnonymousHandler.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Point</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-map.api.handlers">
+<span id="search-around"></span><h3>Search Around<a class="headerlink" href="#module-map.api.handlers" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="map.api.handlers.SearchAroundHandler">
+<em class="property">class </em><tt class="descclassname">map.api.handlers.</tt><tt class="descname">SearchAroundHandler</tt><a class="reference internal" href="_modules/map/api/handlers.html#SearchAroundHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.SearchAroundHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticated user handler for search around quires.</p>
+<p>Searches for all points with a given distance from a given point.</p>
+<dl class="docutils">
+<dt>Authenticated request have read access to:</dt>
+<dd>subject, description, point, address, date_added, report_date, layer,name, id.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Write and update access are not available at this stage.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">&#8216;link for this method point/search/layer=&lt;layer&gt;&amp;around=&lt;point&gt;&amp;r=&lt;distance&gt;&#8217;</p>
+</div>
+<dl class="attribute">
+<dt id="map.api.handlers.SearchAroundHandler.anonymous">
+<tt class="descname">anonymous</tt><a class="headerlink" href="#map.api.handlers.SearchAroundHandler.anonymous" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#map.api.handlers.SearchAroundAnonymousHandler" title="map.api.handlers.SearchAroundAnonymousHandler"><tt class="xref py py-class docutils literal"><span class="pre">SearchAroundAnonymousHandler</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="map.api.handlers.SearchAroundHandler.model">
+<tt class="descname">model</tt><a class="headerlink" href="#map.api.handlers.SearchAroundHandler.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Point</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="map.api.handlers.SearchAroundHandler.read">
+<tt class="descname">read</tt><big>(</big><em>request</em>, <em>layer_name</em>, <em>point</em>, <em>distance</em><big>)</big><a class="reference internal" href="_modules/map/api/handlers.html#SearchAroundHandler.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.SearchAroundHandler.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns points in a given distance from a given point in given layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>layer_name</strong> &#8211; the layer name.</li>
+<li><strong>point</strong> &#8211; the point. The center of the circle.</li>
+<li><strong>distance</strong> &#8211; the radius of the circle.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="map.api.handlers.SearchAroundAnonymousHandler">
+<em class="property">class </em><tt class="descclassname">map.api.handlers.</tt><tt class="descname">SearchAroundAnonymousHandler</tt><a class="reference internal" href="_modules/map/api/handlers.html#SearchAroundAnonymousHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#map.api.handlers.SearchAroundAnonymousHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Anonymous user handler for search around quires.</p>
+<p>Anonymous user can see only the points id and layer.</p>
+<dl class="attribute">
+<dt id="map.api.handlers.SearchAroundAnonymousHandler.model">
+<tt class="descname">model</tt><a class="headerlink" href="#map.api.handlers.SearchAroundAnonymousHandler.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Point</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#module-map.api">API Overview</a></li>
+<li><a class="reference internal" href="#api-handler-methods">API Handler Methods</a><ul>
+<li><a class="reference internal" href="#module-map.api.handlers">Layers Names</a></li>
+<li><a class="reference internal" href="#module-map.api.handlers">Search Within</a></li>
+<li><a class="reference internal" href="#module-map.api.handlers">Search Around</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="accounts.html"
+                        title="previous chapter">Accounts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="accounts.html" title="Accounts"
+             >previous</a> |</li>
+        <li><a href="index.html">oMap v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Haitham Khateeb, Yamama Dagash.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

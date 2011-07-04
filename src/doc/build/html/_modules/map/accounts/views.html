@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>map.accounts.views &mdash; oMap v1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="oMap v1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">oMap v1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for map.accounts.views</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span><span class="p">,</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">views</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.tokens</span> <span class="kn">import</span> <span class="n">default_token_generator</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sites.models</span> <span class="kn">import</span> <span class="n">Site</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">logout</span><span class="p">,</span> <span class="n">login</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">django.utils.http</span> <span class="kn">import</span> <span class="n">base36_to_int</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="kn">from</span> <span class="nn">map.map_info.models</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">map.accounts.forms</span> <span class="kn">import</span> <span class="n">UserCreationForm</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+
+
+
+<div class="viewcode-block" id="mylogin"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.mylogin">[docs]</a><span class="k">def</span> <span class="nf">mylogin</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Login handling method</span>
+
+<span class="sd">    if the request method is GET then the method will return a rendered login\</span>
+<span class="sd">    page: accounts/login.html</span>
+
+<span class="sd">    else (POST request) the method will try login the user. if it succeed\</span>
+<span class="sd">    (usename and passowrd are correct) it will redirect him to the home page\</span>
+<span class="sd">    otherwise it will return the login page with error message.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="o">==</span><span class="s">&#39;GET&#39;</span><span class="p">:</span>
+       <span class="c"># return views.login(request, &#39;accounts/login.html&#39;, &#39;/map&#39;)</span>
+        <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/login.html&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+                <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/map&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                 <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;msg&#39;</span> <span class="p">:</span> <span class="s">&#39;Unactivated account&#39;</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;msg&#39;</span> <span class="p">:</span> <span class="s">&#39;Invalid login&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/map&#39;</span><span class="p">,</span><span class="n">RequestContext</span><span class="p">(</span> <span class="n">request</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="signup"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.signup">[docs]</a><span class="k">def</span> <span class="nf">signup</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template_name</span><span class="o">=</span><span class="s">&#39;registration/signup.html&#39;</span><span class="p">,</span>
+           <span class="n">email_template_name</span><span class="o">=</span><span class="s">&#39;registration/signup_email.html&#39;</span><span class="p">,</span>
+           <span class="n">signup_form</span><span class="o">=</span><span class="n">UserCreationForm</span><span class="p">,</span>
+           <span class="n">token_generator</span><span class="o">=</span><span class="n">default_token_generator</span><span class="p">,</span>
+           <span class="n">post_signup_redirect</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;handles sigup requests.</span>
+
+<span class="sd">    if the request method is GET the method returns the sigup page.</span>
+<span class="sd">    if the request method is POST the method validates the login form, and if</span>
+<span class="sd">    it&#39;s valid a confirmation email will be sent to the user and he will be</span>
+<span class="sd">    redriected to a page telling him that the process finished.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    :param template_name: signup template name.</span>
+<span class="sd">    :param email_template_name: confirmation email template.</span>
+<span class="sd">    :param signup_form: signup form.</span>
+<span class="sd">    :param token_generator: confirmation special token generator.</span>
+<span class="sd">    :param post_signup_redirect: the page to redirect to upon successful process</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">post_signup_redirect</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">post_signup_redirect</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;accounts.views.signup_done&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">signup_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">opts</span><span class="p">[</span><span class="s">&#39;use_https&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">is_secure</span><span class="p">()</span>
+            <span class="n">opts</span><span class="p">[</span><span class="s">&#39;token_generator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token_generator</span>
+            <span class="n">opts</span><span class="p">[</span><span class="s">&#39;email_template_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">email_template_name</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Site</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">installed</span><span class="p">:</span>
+                <span class="n">opts</span><span class="p">[</span><span class="s">&#39;domain_override&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RequestSite</span><span class="p">(</span><span class="n">request</span><span class="p">)</span><span class="o">.</span><span class="n">domain</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">post_signup_redirect</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">signup_form</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,},</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="signup_done"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.signup_done">[docs]</a><span class="k">def</span> <span class="nf">signup_done</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template_name</span><span class="o">=</span><span class="s">&#39;registration/signup_done.html&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;handles requests after submitting sigup request&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="signup_confirm"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.signup_confirm">[docs]</a><span class="k">def</span> <span class="nf">signup_confirm</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">uidb36</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                   <span class="n">token_generator</span><span class="o">=</span><span class="n">default_token_generator</span><span class="p">,</span>
+                   <span class="n">post_signup_redirect</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; handles confirmation links.</span>
+
+<span class="sd">    checks if the confirmation code provided is real. if so, it activates the</span>
+<span class="sd">    user associated with this code and redirect him to the signup complete page</span>
+<span class="sd">    if the code isn&#39;t valid the user will get and error page.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">uidb36</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="c">#checked par url</span>
+    <span class="k">if</span> <span class="n">post_signup_redirect</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">post_signup_redirect</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s">&#39;accounts.views.signup_complete&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">uid_int</span> <span class="o">=</span> <span class="n">base36_to_int</span><span class="p">(</span><span class="n">uidb36</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">uid_int</span><span class="p">)</span>
+    <span class="n">context_instance</span> <span class="o">=</span> <span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">token_generator</span><span class="o">.</span><span class="n">check_token</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;validlink&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context_instance</span><span class="p">[</span><span class="s">&#39;validlink&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">post_signup_redirect</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="signup_complete"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.signup_complete">[docs]</a><span class="k">def</span> <span class="nf">signup_complete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template_name</span><span class="o">=</span><span class="s">&#39;registration/signup_complete.html&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;signup success page.</span>
+
+<span class="sd">     the users reach this page if they pressed on a real confirmation link.</span>
+
+<span class="sd">     &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span>
+                                                              <span class="p">{</span><span class="s">&#39;login_url&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">LOGIN_URL</span><span class="p">}))</span>
+</div>
+<div class="viewcode-block" id="logout"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.logout">[docs]</a><span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;loges user out &quot;&quot;&quot;</span>
+    <span class="n">views</span><span class="o">.</span><span class="n">logout</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/map&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@login_required</span>
+<div class="viewcode-block" id="profile"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.profile">[docs]</a><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns the private profile of the user &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/profile.html&#39;</span><span class="p">,</span><span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+</div>
+<span class="nd">@login_required</span>
+<div class="viewcode-block" id="public"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.public">[docs]</a><span class="k">def</span> <span class="nf">public</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns the public profile of a user</span>
+
+<span class="sd">     Arguments:</span>
+<span class="sd">     :param name: the user name to return his public profile</span>
+
+<span class="sd">     &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Error&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;User doesn&#39;t exist&quot;</span>
+        <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;site/msg.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;title&#39;</span> <span class="p">:</span> <span class="n">title</span><span class="p">,</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&#39;user&#39;</span> <span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,})</span>
+    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/public_profile.html&#39;</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="user_comments"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.user_comments">[docs]</a><span class="k">def</span> <span class="nf">user_comments</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns a rendered page with the user comments</span>
+
+<span class="sd">    :param name: the user name.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">comments</span> <span class="o">=</span>  <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;comments&#39;</span><span class="p">:</span> <span class="n">comments</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/user_comments.html&#39;</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="user_points"><a class="viewcode-back" href="../../../accounts.html#map.accounts.views.user_points">[docs]</a><span class="k">def</span> <span class="nf">user_points</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns a rendered page with the user points</span>
+
+<span class="sd">    :param name: the user name.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">points</span> <span class="o">=</span>  <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;points&#39;</span><span class="p">:</span> <span class="n">points</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;accounts/user_points.html&#39;</span><span class="p">,</span> <span class="n">context_instance</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">oMap v1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Haitham Khateeb, Yamama Dagash.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
